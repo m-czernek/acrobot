@@ -1,5 +1,6 @@
 package com.redhat.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,8 +24,14 @@ public class Explanation implements Serializable {
     @JoinColumn(name="acronym_id", nullable=false)
     private Acronym acronym;
 
-    public Explanation() {
+    // A flag for manual checks of explanations
+    // isChecked = false means the explanation requires manual review
+    @Column(nullable = false, name = "is_checked", columnDefinition = "bit default 0")
+    private boolean isChecked = false;
 
+    private String authorEmail;
+
+    public Explanation() {
     }
 
     public Explanation(String explanation) {
@@ -53,6 +60,22 @@ public class Explanation implements Serializable {
 
     public void setAcronym(Acronym acronym) {
         this.acronym = acronym;
+    }
+
+    public String getAuthorEmail() {
+        return authorEmail;
+    }
+
+    public void setAuthorEmail(String authorEmail) {
+        this.authorEmail = authorEmail;
+    }
+
+    public Boolean getChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(Boolean checked) {
+        isChecked = checked;
     }
 
     @Override

@@ -68,8 +68,7 @@ public class AcroBot implements MessageReceiver {
                     break;
                 }
             case "MESSAGE":
-                String msg = eventJson.get("message").get("text").asText();
-                responseNode.put("text", helper.handleMessageAction(msg));
+                responseNode.put("text", helper.handleMessageAction(eventJson));
 
                 // In case of message, post the response in the same thread.
                 ObjectNode threadNode = jsonNodeFactory.objectNode();
