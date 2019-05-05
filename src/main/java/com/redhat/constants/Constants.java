@@ -8,6 +8,6 @@ public class Constants {
 
     // Response templates
     public static final String RESPONSE_URL_TEMPLATE = "https://chat.googleapis.com/v1/__SPACE_ID__/messages";
-    public static final String ADDED_RESPONSE = "Thank you for adding me!";
+    public static final String ADDED_RESPONSE = "Thank you for adding me! Send `@AcroBot help` for more information about me.";
 
 }
