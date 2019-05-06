@@ -23,11 +23,11 @@ messaging middleware.
 custom_mark10
 @startuml;
 actor "Google Hangouts" as User;
-participant "Push/Sub middleware" as A;
+participant "Pub/Sub middleware" as A;
 participant Acrobot;
-User -> A: send a message;
-Acrobot --> A: get a message;
-Acrobot --> User:  Send a response;
+User -> A: Send a message;
+Acrobot --> A: Poll for a message;
+Acrobot --> User: Send a response;
 @enduml;
 custom_mark10
 </details>
