@@ -48,9 +48,9 @@ For more details on setting up the bot, see the [Google Developer's documentatio
 Acrobot has a few dependencies:
 
 1. export **GOOGLE_APPLICATION_CREDENTIALS**: an environment variable that contains the path to the service account json 
-you created.
+you created. If you are deploying Acrobot on Kubernetes/OpenShift, you will have to inject the file either using a secret, or a config map, into your pod.
 1. export **JDBC_URL**, **JDBC_USER**, and **JDBC_PASSWORD** for the DB connection details.
-1. Change _PROJECT_ID_ and _SUBSCRIPTION_ID_ in the Constants.java file to match your settings # todo parametrize
+1. export **PROJECT_ID** and **SUBSCRIPTION_ID** which match your Google project and subscription created earlier.
 
 ## Usage
 
