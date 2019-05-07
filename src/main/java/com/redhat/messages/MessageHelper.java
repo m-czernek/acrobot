@@ -18,6 +18,10 @@ public class MessageHelper {
         String message = eventJson.get("message").get("text").asText().trim();
         String authorEmail = eventJson.get("user").get("email").asText();
 
+        if(message.contains("@Acrobot ")) {
+            message = message.substring(9);
+        }
+
         if(message.startsWith("!")) {
             message = message.substring(1);
 
