@@ -20,6 +20,12 @@ public class MessageHelper {
 
         if(message.startsWith("!")) {
             message = message.substring(1);
+
+            // Validate message
+            if(!message.contains("=")) {
+                return "Please enter the acronym in format of !$acronym=$explanation.";
+            }
+
             String[] toSave = message.split("=");
             List<Acronym> list = acronymDal.getAcronymsByName(toSave[0]);
             if(list.isEmpty()) {
