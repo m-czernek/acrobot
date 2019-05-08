@@ -1,7 +1,9 @@
 # Acrobot
 
 Acrobot is a Google Hangouts chat bot, with the aim of keeping track
-of acronyms within the company. 
+of acronyms within the company.
+
+![Image of Acrobot saving and answering an acronym](imgs/gchat.png)
 
 ## Architecture
 
@@ -13,12 +15,12 @@ Acrobot is a simple application, using:
 * Kubernetes/OpenShift for deployment #todo OCP template
 
 This particular implementation uses Google's [Cloud Pub/Sub](https://cloud.google.com/pubsub/docs/overview)
-messaging middleware. 
+messaging middleware.
 
 
 ![Alt text](https://g.gravizo.com/source/custom_mark10?https%3A%2F%2Fraw.githubusercontent.com%2Fm-czernek%2Facrobot%2Fmaster%2FREADME.md)
 
-<details> 
+<details>
 <summary></summary>
 custom_mark10
 @startuml;
@@ -42,12 +44,12 @@ Pub/Sub prerequisites:
 1. Create a service account with the **Pub/Sub API** roles.
 1. Create a message queue in the Cloud Platform Console.
 1. Associate the queue with a subscription in the Cloud Platform Console.
-    
+
 For more details on setting up the bot, see the [Google Developer's documentation](https://developers.google.com/hangouts/chat/how-tos/pub-sub).
 
 Acrobot has a few dependencies:
 
-1. export **GOOGLE_APPLICATION_CREDENTIALS**: an environment variable that contains the path to the service account json 
+1. export **GOOGLE_APPLICATION_CREDENTIALS**: an environment variable that contains the path to the service account json
 you created. If you are deploying Acrobot on Kubernetes/OpenShift, you will have to inject the file either using a secret, or a config map, into your pod.
 1. export **JDBC_URL**, **JDBC_USER**, and **JDBC_PASSWORD** for the DB connection details.
 1. export **PROJECT_ID** and **SUBSCRIPTION_ID** which match your Google project and subscription created earlier.
@@ -56,7 +58,7 @@ you created. If you are deploying Acrobot on Kubernetes/OpenShift, you will have
 
 You can interact with Acrobot in several ways:
 
-* You can send an acronym in a private message, or tag Acrobot and send the acronym in a room. 
+* You can send an acronym in a private message, or tag Acrobot and send the acronym in a room.
 Acrobot will look it up in its database and returns the result.
 * You can add an acronym explanation in the form of `!lol=lot of laughter`, that is `!$acronym=explanation`.
 * You can send `help` for some basic explanation and help.
