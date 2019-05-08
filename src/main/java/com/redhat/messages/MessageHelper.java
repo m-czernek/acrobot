@@ -18,27 +18,25 @@ public class MessageHelper {
         String message = eventJson.get("message").get("text").asText().trim();
         String authorEmail = eventJson.get("user").get("email").asText();
 
-        if(message.contains("@Acrobot ")) {
-            message = message.substring(9);
-        }
-
+        message = removeMentionFromMessage(message);
         if(message.startsWith("!")) {
             message = message.substring(1);
 
             // Validate message
             if(!message.contains("=")) {
-                return "Please enter the acronym in format of !$acronym=$explanation.";
+                return "Please enter the acronym in format of !$acronym=$explanation to save an explanation," +
+                        ", or only $acronym to get an explanation";
             }
 
-            String[] toSave = message.split("=");
+            String[] toSave = splitMessageToSaveAndTrim(message);
             List<Acronym> list = acronymDal.getAcronymsByName(toSave[0]);
             if(list.isEmpty()) {
-                saveAcronym(message, authorEmail);
+                saveAcronym(toSave, authorEmail);
                 resp = "Thank you, I have saved your acronym.";
             }
             else {
                 mergeAcronym(list.get(0), toSave[1], authorEmail);
-                resp = "Thank you, I have updated the acronym. All acronyms will be manually reviewed.";
+                resp = "Thank you, I have updated the acronym.";
             }
 
         } else if (message.equals("help")) {
@@ -50,6 +48,25 @@ public class MessageHelper {
             resp = getAcronymAsString(message);
         }
         return resp;
+    }
+
+    private String[] splitMessageToSaveAndTrim(String message) {
+        String[] res = message.split("=", 2);
+        res[0] = res[0].trim();
+        res[1] = res[1].trim();
+        return res;
+    }
+
+    private String removeMentionFromMessage(String message) {
+        // Whatever the name of the bot is, the message might start with @name, e.g. @acrobot $msg
+        // because we care only about $msg, we split the string on the space that comes after the @mention
+        if(message.startsWith("@")) {
+            String[] messageArray = message.split(" ", 2);
+            if(messageArray.length == 2) {
+                return messageArray[1].trim();
+            }
+        }
+        return message.trim();
     }
 
     private void mergeAcronym(Acronym acronym, String explanation, String authorEmail) {
@@ -73,8 +90,7 @@ public class MessageHelper {
         return resp;
     }
 
-    private void saveAcronym(String message, String authorEmail) {
-        String[] toSave = message.split("=");
+    private void saveAcronym(String[] toSave, String authorEmail) {
         Explanation e = new Explanation(toSave[1]);
         e.setAuthorEmail(authorEmail);
         Acronym a = new Acronym(toSave[0]);

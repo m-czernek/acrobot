@@ -18,7 +18,7 @@ import java.util.Set;
 @Entity
 @Table(name = "acronym")
 @NamedQueries(
-        @NamedQuery(name = "findAcronymByName", query = "SELECT a FROM Acronym a WHERE a.acronym = ?1")
+        @NamedQuery(name = "findAcronymByName", query = "SELECT a FROM Acronym a WHERE lower(a.acronym) = ?1")
 )
 public class Acronym implements java.io.Serializable {
 

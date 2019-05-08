@@ -14,18 +14,19 @@ public class AcronymDAL {
         init();
     }
 
+    // Acronym is checked in lowercase form, since the query also contains lowercase form.
+    // This is such that $ACRONYM is not duplicated with $acronym.
     public List<Acronym> getAcronymsByName(String acronym) {
         init();
         try {
-            List<Acronym> res = em.createNamedQuery("findAcronymByName", Acronym.class)
-                    .setParameter(1, acronym)
+            return em.createNamedQuery("findAcronymByName", Acronym.class)
+                    .setParameter(1, acronym.toLowerCase())
                     .getResultList();
-            close();
-            return res;
         } catch (Exception e) {
             e.printStackTrace();
-            close();
             return Collections.emptyList();
+        } finally {
+            close();
         }
     }
 
