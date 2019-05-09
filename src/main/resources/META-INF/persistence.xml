@@ -13,6 +13,18 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
             <property name="hibernate.current_session_context_class" value="thread" />
             <property name="hibernate.hbm2ddl.auto" value="update" />
+
+            <!-- Managing active connections -->
+            <property name="hibernate.connection.autoReconnect" value="true" />
+            <property name="hibernate.c3p0.idle_test_period" value="300"/>
+            <property name="hibernate.c3p0.min_size" value="5"/>
+            <property name="hibernate.c3p0.max_size" value="20"/>
+            <property name="hibernate.c3p0.timeout" value="1800"/>
+            <property name="hibernate.c3p0.max_statements" value="50"/>
+            <property name="checkoutTimeout" value="0" />
+            <property name="testConnectionOnCheckout" value="true" />
+            <property name="testConnectionOnCheckin" value="false" />
+            <property name="preferredTestQuery" value="SELECT 1" />
         </properties>
     </persistence-unit>
 </persistence>
