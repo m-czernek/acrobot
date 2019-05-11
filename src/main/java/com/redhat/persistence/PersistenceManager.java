@@ -21,7 +21,7 @@ public enum PersistenceManager {
         init();
     }
 
-    private void init() {
+    public void init() {
         if(emFactory == null) {
             Map<String, String> persistenceMap = new HashMap<>();
             persistenceMap.put("javax.persistence.jdbc.url", jdbcUrl);
@@ -32,6 +32,9 @@ public enum PersistenceManager {
     }
 
     public EntityManager getEntityManager() {
+        if(emFactory == null) {
+            init();
+        }
         return emFactory.createEntityManager();
     }
 

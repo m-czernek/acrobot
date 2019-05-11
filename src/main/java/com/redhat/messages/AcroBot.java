@@ -49,7 +49,7 @@ public class AcroBot implements MessageReceiver {
             handle(dataJson);
             consumer.ack();
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
             consumer.nack();
         }
     }
@@ -75,14 +75,12 @@ public class AcroBot implements MessageReceiver {
                 threadNode.put("name", eventJson.get("message").get("thread").get("name").asText());
                 responseNode.set("thread", threadNode);
                 break;
-            case "REMOVED_FROM_SPACE":
             default:
                 // Do nothing
                 return;
         }
 
         // Post the response to Hangouts Chat.
-
         String URI = Constants.RESPONSE_URL_TEMPLATE
                 .replaceFirst("__SPACE_ID__", eventJson.get("space").get("name").asText());
         GenericUrl url = new GenericUrl(URI);

@@ -1,6 +1,7 @@
 package com.redhat.messages;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.redhat.constants.Constants;
 import com.redhat.entities.Acronym;
 import com.redhat.entities.Explanation;
 import com.redhat.persistence.AcronymDAL;
@@ -15,35 +16,34 @@ public class MessageHelper {
 
     public String handleMessageAction(JsonNode eventJson) {
         String resp;
-        String message = eventJson.get("message").get("text").asText().trim();
+        String message = eventJson.get("message").get("argumentText").asText().trim();
         String authorEmail = eventJson.get("user").get("email").asText();
 
-        message = removeMentionFromMessage(message);
+        if(message.startsWith(Constants.SUDO_PASSWORD)) {
+            return AdministrativeMessageHelper.handleAdminMessage(message);
+        }
+
         if(message.startsWith("!")) {
             message = message.substring(1);
 
             // Validate message
             if(!message.contains("=")) {
-                return "Please enter the acronym in format of !$acronym=$explanation to save an explanation," +
-                        ", or only $acronym to get an explanation";
+                return Constants.INCORRECT_FORMAT_FOR_SAVING_ACRONYM;
             }
 
             String[] toSave = splitMessageToSaveAndTrim(message);
             List<Acronym> list = acronymDal.getAcronymsByName(toSave[0]);
             if(list.isEmpty()) {
                 saveAcronym(toSave, authorEmail);
-                resp = "Thank you, I have saved your acronym.";
+                resp = Constants.ACRONYM_SAVED;
             }
             else {
                 mergeAcronym(list.get(0), toSave[1], authorEmail);
-                resp = "Thank you, I have updated the acronym.";
+                resp = Constants.ACRONYM_UPDATED;
             }
 
         } else if (message.equals("help")) {
-            resp = "You are interacting with Acrobot. To get an acronym, simply tag me or DM me with the acronym. \n";
-            resp += "To insert a new acronym, tag me or DM me with the format of '!acronym=explanation'. \n";
-            resp += "Acrobot is the original idea of Pavel Tisnovsky, and is available on IRC. \n" +
-                    "Marek Czernek has implemented me, the Google Chat Acrobot.";
+            resp = Constants.HELP_TEXT;
         } else {
             resp = getAcronymAsString(message);
         }
@@ -55,18 +55,6 @@ public class MessageHelper {
         res[0] = res[0].trim();
         res[1] = res[1].trim();
         return res;
-    }
-
-    private String removeMentionFromMessage(String message) {
-        // Whatever the name of the bot is, the message might start with @name, e.g. @acrobot $msg
-        // because we care only about $msg, we split the string on the space that comes after the @mention
-        if(message.startsWith("@")) {
-            String[] messageArray = message.split(" ", 2);
-            if(messageArray.length == 2) {
-                return messageArray[1].trim();
-            }
-        }
-        return message.trim();
     }
 
     private void mergeAcronym(Acronym acronym, String explanation, String authorEmail) {
