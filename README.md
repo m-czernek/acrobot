@@ -60,7 +60,7 @@ You can interact with Acrobot in several ways:
 
 * You can send an acronym in a private message, or tag Acrobot and send the acronym in a room.
 Acrobot will look it up in its database and returns the result.
-* You can add an acronym explanation in the form of `!lol=lot of laughter`, that is `!$acronym=explanation`.
+* You can add an acronym explanation in the form of `!lol=laugh out loud`, that is `!$acronym=$explanation`.
 * You can send `help` for some basic explanation and help.
 
 ## Credits
