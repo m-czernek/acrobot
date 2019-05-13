@@ -13,11 +13,17 @@ public enum PersistenceManager {
     private String jdbcUrl;
     private String jdbcUser;
     private String jdbcPassword;
+    private String persistenceUnitName;
+    private String DEFAULT_PU = "backend-pu";
 
     PersistenceManager() {
         jdbcUrl = System.getenv("JDBC_URL");
         jdbcUser = System.getenv("JDBC_USER");
         jdbcPassword = System.getenv("JDBC_PASSWORD");
+        persistenceUnitName = System.getenv("PU");
+        if(persistenceUnitName == null) {
+            persistenceUnitName = DEFAULT_PU;
+        }
         init();
     }
 
@@ -27,7 +33,7 @@ public enum PersistenceManager {
             persistenceMap.put("javax.persistence.jdbc.url", jdbcUrl);
             persistenceMap.put("javax.persistence.jdbc.user", jdbcUser);
             persistenceMap.put("javax.persistence.jdbc.password", jdbcPassword);
-            emFactory = Persistence.createEntityManagerFactory("backend-pu", persistenceMap);
+            emFactory = Persistence.createEntityManagerFactory(persistenceUnitName, persistenceMap);
         }
     }
 
