@@ -14,8 +14,12 @@ public class Constants {
             " to save an explanation, or only $acronym to get an explanation";
     public static final String ACRONYM_SAVED = "Thank you, I have saved your acronym.";
     public static final String ACRONYM_UPDATED = "Thank you, I have updated the acronym";
-    public static final String HELP_TEXT = "You are interacting with Acrobot. To get an acronym explanation, tag me or DM me with the acronym. \n" +
-            "To insert a new acronym, tag me or DM me with the format of '!acronym=explanation'. \n" +
+    public static final String HELP_TEXT = "You are interacting with Acrobot. \n\n" +
+            "Actions:\n" +
+            "*Get an acronym explanation:* `@Acrobot acronym` \n" +
+            "*Insert an acronym:* `@Acrobot !acronym=explanation` \n" +
+            "You can update an already existing acronym the same way as inserting. \n" +
+            "All of the actions work in a direct message without tagging @Acrobot. \n" +
             "Acrobot is implemented by Marek Czernek. You can find documentation and file issues or suggest improvements at " +
             "https://github.com/m-czernek/acrobot";
 }
