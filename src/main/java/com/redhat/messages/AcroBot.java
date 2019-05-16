@@ -50,7 +50,7 @@ public class AcroBot implements MessageReceiver {
             consumer.ack();
         } catch (Exception e) {
             e.printStackTrace();
-            consumer.nack();
+            consumer.ack();
         }
     }
 
