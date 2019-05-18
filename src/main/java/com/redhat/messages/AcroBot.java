@@ -47,9 +47,9 @@ public class AcroBot implements MessageReceiver {
             JsonNode dataJson = mapper.readTree(pubsubMessage.getData().toStringUtf8());
             System.out.println("Data : " + dataJson.toString());
             handle(dataJson);
-            consumer.ack();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
             consumer.ack();
         }
     }
@@ -64,7 +64,7 @@ public class AcroBot implements MessageReceiver {
         switch (eventType) {
             case "ADDED_TO_SPACE":
                 responseNode.put("text", Constants.ADDED_RESPONSE);
-                if(!eventJson.has("message")) {
+                if(!eventJson.has("message") || !eventJson.get("message").has("argumentText")) {
                     break;
                 }
             case "MESSAGE":
