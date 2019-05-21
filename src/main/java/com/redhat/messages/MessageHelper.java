@@ -16,8 +16,15 @@ public class MessageHelper {
 
     public String handleMessageAction(JsonNode eventJson) {
         String resp;
-        String message = eventJson.get("message").get("argumentText").asText().trim();
+        String message;
         String authorEmail = eventJson.get("user").get("email").asText();
+
+        try {
+            message = eventJson.get("message").get("argumentText").asText().trim();
+        } catch (NullPointerException e) {
+            // Acrobot was added via mention to a room, and has no argument text
+            return Constants.ADDED_RESPONSE;
+        }
 
         if(message.startsWith(Constants.SUDO_PASSWORD)) {
             return AdministrativeMessageHelper.handleAdminMessage(message);
@@ -27,7 +34,7 @@ public class MessageHelper {
             message = message.substring(1);
 
             // Validate message
-            if(!message.contains("=")) {
+            if (!isMessageValid(message)) {
                 return Constants.INCORRECT_FORMAT_FOR_SAVING_ACRONYM;
             }
 
@@ -48,6 +55,13 @@ public class MessageHelper {
             resp = getAcronymAsString(message);
         }
         return resp;
+    }
+
+    private boolean isMessageValid(String message) {
+        if(!message.contains("=") || message.trim().endsWith("=")) {
+            return false;
+        }
+        return true;
     }
 
     private String[] splitMessageToSaveAndTrim(String message) {

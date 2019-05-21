@@ -64,7 +64,7 @@ public class AcroBot implements MessageReceiver {
         switch (eventType) {
             case "ADDED_TO_SPACE":
                 responseNode.put("text", Constants.ADDED_RESPONSE);
-                if(!eventJson.has("message") || !eventJson.get("message").has("argumentText")) {
+                if(!eventJson.has("message")) {
                     break;
                 }
             case "MESSAGE":
