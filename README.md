@@ -66,4 +66,4 @@ Acrobot will look it up in its database and returns the result.
 ## Credits
 
 Author: Marek Czernek.
-The idea of Acrobot is taken from [Pavel Tisnovsky](https://github.com/tisnik), who implemented it for IRC.
+The idea of Acrobot came from a number of very smart folks at Red Hat. The IRC implementation was done by https://github.com/mfojtik. If you wish to run AcroBot on IRC, see the [AcroBot Implementation](https://github.com/theacrobot/AcroBot).
