@@ -19,6 +19,8 @@ public class JsonNodeHelper {
     private static String INCORRECT_ACRONYM = "ACRONYM";
     private static String INCORRECT_ACRONYM_SAVE = "!" + INCORRECT_ACRONYM + "  ";
     private static String INCORRECT_ACRONYM_SAVE_WITH_EQUALS = "! " + INCORRECT_ACRONYM + " =   ";
+    private static String UPDATE_OLD_EXPLANATION = "!FOO1=BAR1=>BAR3";
+    private static String DELETE_EXPLANATION = "!FOO1=BAR3=>";
 
     public static JsonNode getJsonNodeWithoutMessageArgumentText() {
         try {
@@ -56,6 +58,14 @@ public class JsonNodeHelper {
 
     public static JsonNode getIncorrectAcronymSaveWithEquals() {
         return alterArgumentText(INCORRECT_ACRONYM_SAVE_WITH_EQUALS);
+    }
+
+    public static JsonNode getUpdateAcronymExplanation() {
+        return alterArgumentText(UPDATE_OLD_EXPLANATION);
+    }
+
+    public static JsonNode getDeleteAcronymExplanation() {
+        return alterArgumentText(DELETE_EXPLANATION);
     }
 
     public static JsonNode getIncorrectAcronym() {

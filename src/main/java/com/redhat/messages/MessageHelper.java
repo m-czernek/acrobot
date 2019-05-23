@@ -38,15 +38,10 @@ public class MessageHelper {
                 return Constants.INCORRECT_FORMAT_FOR_SAVING_ACRONYM;
             }
 
-            String[] toSave = splitMessageToSaveAndTrim(message);
-            List<Acronym> list = acronymDal.getAcronymsByName(toSave[0]);
-            if(list.isEmpty()) {
-                saveAcronym(toSave, authorEmail);
-                resp = Constants.ACRONYM_SAVED;
-            }
-            else {
-                mergeAcronym(list.get(0), toSave[1], authorEmail);
-                resp = Constants.ACRONYM_UPDATED;
+            if(message.contains("=>")) {
+                resp = updateAcronymOrRemoveExplanation(message, authorEmail);
+            } else {
+                resp = saveOrMergeAcronym(message, authorEmail);
             }
 
         } else if (message.equals("help")) {
@@ -57,18 +52,69 @@ public class MessageHelper {
         return resp;
     }
 
-    private boolean isMessageValid(String message) {
-        if(!message.contains("=") || message.trim().endsWith("=")) {
-            return false;
+    private String updateAcronymOrRemoveExplanation(String message, String authorEmail) {
+        String resp;
+        String[] acronymExplanationsArray = splitMessageToSaveAndTrim(message);
+
+        List<Acronym> acronyms = acronymDal.getAcronymsByName(acronymExplanationsArray[0]);
+        if(acronyms.isEmpty()) {
+            return "No such acronym found.";
         }
-        return true;
+
+        String[] oldNewExplanation = acronymExplanationsArray[1].split("=>");
+        String[] trimmedOldNewExplanation = trimArray(oldNewExplanation);
+
+        Acronym a = acronyms.get(0);
+        Explanation e = a.getExplanations()
+                .stream()
+                .filter(explanation -> explanation.getExplanation().equals(trimmedOldNewExplanation[0]))
+                .findFirst()
+                .get();
+
+        if(!e.getAuthorEmail().equals(authorEmail)) {
+            return "Insufficient privileges";
+        }
+
+        if(trimmedOldNewExplanation.length == 1) {
+            a.getExplanations().remove(e);
+            acronymDal.deleteExplanation(e);
+            resp = "Removed explanation";
+        } else {
+            e.setExplanation(trimmedOldNewExplanation[1]);
+            resp = "Updated explanation";
+        }
+        acronymDal.updateAcronym(a);
+        return resp;
+    }
+
+    private String saveOrMergeAcronym(String message, String authorEmail) {
+        String resp;
+        String[] toSave = splitMessageToSaveAndTrim(message);
+        List<Acronym> list = acronymDal.getAcronymsByName(toSave[0]);
+        if(list.isEmpty()) {
+            saveAcronym(toSave, authorEmail);
+            resp = Constants.ACRONYM_SAVED;
+        }
+        else {
+            mergeAcronym(list.get(0), toSave[1], authorEmail);
+            resp = Constants.ACRONYM_UPDATED;
+        }
+        return resp;
+    }
+
+    private boolean isMessageValid(String message) {
+        return message.contains("=") && (!message.trim().endsWith("="));
     }
 
     private String[] splitMessageToSaveAndTrim(String message) {
-        String[] res = message.split("=", 2);
-        res[0] = res[0].trim();
-        res[1] = res[1].trim();
-        return res;
+        return trimArray(message.split("=", 2));
+    }
+
+    private String[] trimArray(String[] array) {
+        for(int i = 0; i < array.length; i++) {
+            array[i] = array[i].trim();
+        }
+        return array;
     }
 
     private void mergeAcronym(Acronym acronym, String explanation, String authorEmail) {

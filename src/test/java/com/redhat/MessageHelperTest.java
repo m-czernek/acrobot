@@ -50,11 +50,11 @@ public class MessageHelperTest {
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getAddAcronymRequest()))
                 .isEqualTo(Constants.ACRONYM_SAVED);
         Assertions
-                .assertThat(helper.handleMessageAction(JsonNodeHelper.getAcronymLowercase()).trim())
-                .isEqualTo(JsonNodeHelper.EXPLANATION);
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.getAcronymLowercase()))
+                .isEqualTo(JsonNodeHelper.EXPLANATION + "\n");
         Assertions
-                .assertThat(helper.handleMessageAction(JsonNodeHelper.getAcronymUppercase()).trim())
-                .isEqualTo(JsonNodeHelper.EXPLANATION);
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.getAcronymUppercase()))
+                .isEqualTo(JsonNodeHelper.EXPLANATION + "\n");
     }
 
     /**
@@ -87,5 +87,22 @@ public class MessageHelperTest {
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getIncorrectAcronym()))
                 .contains("No acronym");
+    }
+
+    @Test
+    public void updateOldExplanation() {
+        Assertions
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.getUpdateAcronymExplanation()))
+                .isEqualTo("Updated explanation");
+        Assertions
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.getAcronymLowercase()))
+                .contains("BAR3");
+        Assertions
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.getDeleteAcronymExplanation()))
+                .contains("Removed explanation");
+
+        Assertions
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.getAcronymLowercase()))
+                .doesNotContain("BAR3");
     }
 }
