@@ -1,5 +1,7 @@
 # Acrobot
 
+[![Build Status](https://travis-ci.com/m-czernek/acrobot.svg?branch=master)](https://travis-ci.com/m-czernek/acrobot)
+
 Acrobot is a Google Hangouts chat bot, with the aim of keeping track
 of acronyms within the company.
 
