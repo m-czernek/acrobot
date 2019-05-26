@@ -7,11 +7,11 @@ import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
 
-public class AcronymDAL {
+public class AcronymExplanationDal {
 
     private EntityManager em;
 
-    public AcronymDAL() {
+    public AcronymExplanationDal() {
         init();
     }
 

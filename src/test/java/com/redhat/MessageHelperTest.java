@@ -2,8 +2,11 @@ package com.redhat;
 
 import com.redhat.constants.Constants;
 import com.redhat.helpers.JsonNodeHelper;
+import com.redhat.messages.AdministrativeMessageHelper;
 import com.redhat.messages.MessageHelper;
 import org.assertj.core.api.Assertions;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
@@ -47,9 +50,6 @@ public class MessageHelperTest {
     @Test
     public void setAcronymGetAcronymTest() {
         Assertions
-                .assertThat(helper.handleMessageAction(JsonNodeHelper.getAddAcronymRequest()))
-                .isEqualTo(Constants.ACRONYM_SAVED);
-        Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getAcronymLowercase()))
                 .isEqualTo(JsonNodeHelper.EXPLANATION + "\n");
         Assertions
@@ -63,8 +63,6 @@ public class MessageHelperTest {
      */
     @Test
     public void updateAcronymTest() {
-        helper.handleMessageAction(JsonNodeHelper.getAddAcronymRequest());
-        // Actually update the acronym here
         helper.handleMessageAction(JsonNodeHelper.getUpdateAcronym());
 
         Assertions
@@ -89,8 +87,11 @@ public class MessageHelperTest {
                 .contains("No acronym");
     }
 
+    /**
+     * Test whether we can update and delete an acronym that we can delete (i.e. a user can update their own acronyms only)
+     */
     @Test
-    public void updateOldExplanation() {
+    public void updateDeleteTest() {
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getUpdateAcronymExplanation()))
                 .isEqualTo("Updated explanation");
@@ -100,9 +101,33 @@ public class MessageHelperTest {
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getDeleteAcronymExplanation()))
                 .contains("Removed explanation");
-
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getAcronymLowercase()))
                 .doesNotContain("BAR3");
+    }
+
+    /**
+     * Test whether update and delete fails when user tries to modify someone else's acronym
+     */
+    @Test
+    public void updateDeleteFailTest() {
+        Assertions
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.getUpdateAcronymExplanationDifferentUser()))
+                .isEqualTo("Insufficient privileges");
+
+        Assertions
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.getDeleteAcronymExplanationDifferentUser()))
+                .isEqualTo("Insufficient privileges");
+    }
+
+    @Before
+    public void setupDB() {
+        AdministrativeMessageHelper.handleAdminMessage("connect");
+        helper.handleMessageAction(JsonNodeHelper.getSetupDb());
+    }
+
+    @After
+    public void cleanDB() {
+        AdministrativeMessageHelper.handleAdminMessage("disconnect");
     }
 }

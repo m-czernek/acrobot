@@ -2,7 +2,7 @@ package com.redhat;
 
 import com.redhat.entities.Acronym;
 import com.redhat.entities.Explanation;
-import com.redhat.persistence.AcronymDAL;
+import com.redhat.persistence.AcronymExplanationDal;
 import org.assertj.core.api.Assertions;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class DataAccessLayerTest {
-    private AcronymDAL dal = new AcronymDAL();
+    private AcronymExplanationDal dal = new AcronymExplanationDal();
     private static final String ACRONYM_LOWERCASE_NAME = "foo";
     private static final String ACRONYM_UPPERCASE_NAME = "FOO";
     private static final String UPDATE_ACRONYM = "baz";

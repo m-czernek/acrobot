@@ -11,16 +11,17 @@ import java.io.IOException;
 public class JsonNodeHelper {
     private static ObjectMapper mapper = new ObjectMapper();
     private static JsonFactory factory = mapper.getFactory();
-    private static String ACRONYM = "FOO1";
+    private static String INITIAL_ACRONYM = "FOO1";
     public static String EXPLANATION = "BAR1";
     public static String EXPLANATION_UPDATE = "BAR2";
-    private static String SAVE_ACRONYM = "!  " + ACRONYM + "  =  " + EXPLANATION;
-    private static String UPDATE_ACRONYM = "! " + ACRONYM + " = " + EXPLANATION_UPDATE;
+    private static String UPDATE_ACRONYM = "! " + INITIAL_ACRONYM + " = " + EXPLANATION_UPDATE;
     private static String INCORRECT_ACRONYM = "ACRONYM";
     private static String INCORRECT_ACRONYM_SAVE = "!" + INCORRECT_ACRONYM + "  ";
     private static String INCORRECT_ACRONYM_SAVE_WITH_EQUALS = "! " + INCORRECT_ACRONYM + " =   ";
-    private static String UPDATE_OLD_EXPLANATION = "!FOO1=BAR1=>BAR3";
-    private static String DELETE_EXPLANATION = "!FOO1=BAR3=>";
+    private static String UPDATE_OLD_EXPLANATION = "!" + INITIAL_ACRONYM + "=" + EXPLANATION + "=>BAR3";
+    private static String DELETE_EXPLANATION = "!" + INITIAL_ACRONYM + "=BAR3=>";
+
+    private static String SETUP_DB_ACRONYM = "! " +  INITIAL_ACRONYM + "  =  " + EXPLANATION;
 
     public static JsonNode getJsonNodeWithoutMessageArgumentText() {
         try {
@@ -36,16 +37,16 @@ public class JsonNodeHelper {
         return alterArgumentText("help");
     }
 
-    public static JsonNode getAddAcronymRequest() {
-        return alterArgumentText(SAVE_ACRONYM);
+    public static JsonNode getSetupDb() {
+        return alterArgumentText(SETUP_DB_ACRONYM);
     }
 
     public static JsonNode getAcronymLowercase() {
-        return alterArgumentText(ACRONYM.toLowerCase());
+        return alterArgumentText(INITIAL_ACRONYM.toLowerCase());
     }
 
     public static JsonNode getAcronymUppercase() {
-        return alterArgumentText(ACRONYM);
+        return alterArgumentText(INITIAL_ACRONYM);
     }
 
     public static JsonNode getUpdateAcronym() {
@@ -68,6 +69,14 @@ public class JsonNodeHelper {
         return alterArgumentText(DELETE_EXPLANATION);
     }
 
+    public static JsonNode getUpdateAcronymExplanationDifferentUser() {
+        return alterUser(getUpdateAcronymExplanation(), "rbecky@example.com");
+    }
+
+    public static JsonNode getDeleteAcronymExplanationDifferentUser() {
+        return alterUser(getDeleteAcronymExplanation(), "rbecky@example.com");
+    }
+
     public static JsonNode getIncorrectAcronym() {
         return alterArgumentText(INCORRECT_ACRONYM);
     }
@@ -75,9 +84,17 @@ public class JsonNodeHelper {
     private static ObjectNode alterArgumentText(String argumentTextString) {
         JsonNode node = JsonNodeHelper.getJsonNodeWithoutMessageArgumentText();
         ObjectNode nodeHelpText = ((ObjectNode) node);
-        ObjectNode message = (ObjectNode) nodeHelpText.get("message");
-        message.put("argumentText", argumentTextString);
-        nodeHelpText.set("message", message);
+        ObjectNode messageNode = (ObjectNode) nodeHelpText.get("message");
+        messageNode.put("argumentText", argumentTextString);
+        nodeHelpText.set("message", messageNode);
+        return nodeHelpText;
+    }
+
+    private static ObjectNode alterUser(JsonNode node, String user) {
+        ObjectNode nodeHelpText = ((ObjectNode) node);
+        ObjectNode userNode = (ObjectNode) nodeHelpText.get("user");
+        userNode.put("email", user);
+        nodeHelpText.set("user", userNode);
         return nodeHelpText;
     }
 

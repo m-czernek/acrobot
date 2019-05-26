@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.redhat.constants.Constants;
 import com.redhat.entities.Acronym;
 import com.redhat.entities.Explanation;
-import com.redhat.persistence.AcronymDAL;
+import com.redhat.persistence.AcronymExplanationDal;
 
 import java.util.HashSet;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class MessageHelper {
 
-    private AcronymDAL acronymDal = new AcronymDAL();
+    private AcronymExplanationDal acronymExplanationDal = new AcronymExplanationDal();
 
     public String handleMessageAction(JsonNode eventJson) {
         String resp;
@@ -56,7 +56,7 @@ public class MessageHelper {
         String resp;
         String[] acronymExplanationsArray = splitMessageToSaveAndTrim(message);
 
-        List<Acronym> acronyms = acronymDal.getAcronymsByName(acronymExplanationsArray[0]);
+        List<Acronym> acronyms = acronymExplanationDal.getAcronymsByName(acronymExplanationsArray[0]);
         if(acronyms.isEmpty()) {
             return "No such acronym found.";
         }
@@ -77,20 +77,20 @@ public class MessageHelper {
 
         if(trimmedOldNewExplanation.length == 1) {
             a.getExplanations().remove(e);
-            acronymDal.deleteExplanation(e);
+            acronymExplanationDal.deleteExplanation(e);
             resp = "Removed explanation";
         } else {
             e.setExplanation(trimmedOldNewExplanation[1]);
             resp = "Updated explanation";
         }
-        acronymDal.updateAcronym(a);
+        acronymExplanationDal.updateAcronym(a);
         return resp;
     }
 
     private String saveOrMergeAcronym(String message, String authorEmail) {
         String resp;
         String[] toSave = splitMessageToSaveAndTrim(message);
-        List<Acronym> list = acronymDal.getAcronymsByName(toSave[0]);
+        List<Acronym> list = acronymExplanationDal.getAcronymsByName(toSave[0]);
         if(list.isEmpty()) {
             saveAcronym(toSave, authorEmail);
             resp = Constants.ACRONYM_SAVED;
@@ -122,12 +122,12 @@ public class MessageHelper {
         e.setAcronym(acronym);
         e.setAuthorEmail(authorEmail);
         acronym.getExplanations().add(e);
-        acronymDal.updateAcronym(acronym);
+        acronymExplanationDal.updateAcronym(acronym);
     }
 
     private String getAcronymAsString(String message) {
         String resp = "";
-        for(Acronym a : acronymDal.getAcronymsByName(message)) {
+        for(Acronym a : acronymExplanationDal.getAcronymsByName(message)) {
             for(Explanation e : a.getExplanations()) {
                 resp += e.getExplanation() + "\n";
             }
@@ -146,6 +146,6 @@ public class MessageHelper {
         Set<Explanation> set = new HashSet<>();
         set.add(e);
         a.setExplanations(set);
-        acronymDal.saveAcronym(a);
+        acronymExplanationDal.saveAcronym(a);
     }
 }
