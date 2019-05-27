@@ -11,9 +11,10 @@ import java.io.IOException;
 public class JsonNodeHelper {
     private static final ObjectMapper mapper = new ObjectMapper();
     private static final JsonFactory factory = mapper.getFactory();
-    private static final String INITIAL_ACRONYM = "FOO1";
+    public static final String INITIAL_ACRONYM = "FOO1";
     public static final String EXPLANATION = "BAR1";
     public static final String EXPLANATION_UPDATE = "BAR2";
+    public static final String NON_EXISTENT_EXPLANATION = "BAR3";
 
     // Incorrect inputs
     private static final String INCORRECT_ACRONYM = "ACRONYM";
@@ -92,11 +93,15 @@ public class JsonNodeHelper {
         return alterUser(deleteAcronymInitialExplanation(), NON_STANDARD_EMAIL);
     }
 
+    public static JsonNode updateNonExistentExplanation() {
+        return alterArgumentText("!" + INITIAL_ACRONYM + "=" + NON_EXISTENT_EXPLANATION + "=>");
+    }
+
     public static JsonNode getIncorrectAcronym() {
         return alterArgumentText(INCORRECT_ACRONYM);
     }
 
-    private static ObjectNode alterArgumentText(String argumentTextString) {
+    public static ObjectNode alterArgumentText(String argumentTextString) {
         JsonNode node = JsonNodeHelper.getJsonNodeWithoutMessageArgumentText();
         ObjectNode nodeHelpText = ((ObjectNode) node);
         ObjectNode messageNode = (ObjectNode) nodeHelpText.get("message");

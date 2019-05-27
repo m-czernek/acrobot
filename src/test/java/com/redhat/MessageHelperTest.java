@@ -1,5 +1,6 @@
 package com.redhat;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.redhat.constants.Constants;
 import com.redhat.helpers.JsonNodeHelper;
 import com.redhat.messages.AdministrativeMessageHelper;
@@ -93,13 +94,13 @@ public class MessageHelperTest {
     public void updateDeleteTest() {
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.updateAcronymExplanationSameEmail()))
-                .isEqualTo("Updated explanation");
+                .isEqualTo(Constants.EXPLANATION_UPDATED);
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getInitialAcronymLowercase()))
                 .isEqualTo(JsonNodeHelper.EXPLANATION_UPDATE + "\n");
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.deleteUpdatedAcronymExplanationSameEmail()))
-                .contains("Removed explanation");
+                .contains(Constants.EXPLANATION_REMOVED);
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getInitialAcronymLowercase()))
                 .doesNotContain(JsonNodeHelper.EXPLANATION_UPDATE);
@@ -113,7 +114,7 @@ public class MessageHelperTest {
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getUpdateAcronymExplanationDifferentUser()))
                 .as("Updating acronym with different email address did not fail properly")
-                .isEqualTo("Insufficient privileges");
+                .isEqualTo(Constants.INSUFFICIENT_PRIVILEGES);
 
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getInitialAcronymLowercase()))
@@ -123,12 +124,54 @@ public class MessageHelperTest {
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getDeleteAcronymInitialExplanationDifferentUser()))
                 .as("Deleting acronym with different email address did not fail properly")
-                .isEqualTo("Insufficient privileges");
+                .isEqualTo(Constants.INSUFFICIENT_PRIVILEGES);
 
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getInitialAcronymLowercase()))
                 .as("Even though we returned insufficient privileges, the delete was persisted")
                 .contains(JsonNodeHelper.EXPLANATION);
+    }
+
+    /**
+     * Test handling of updating non-existent explanation, e.g. acronym=non-existent explanation=>new explanation.
+     * Since we don't know what to update, we return an error message to the user.
+     */
+    @Test
+    public void updateNonExistentExplanationTest() {
+        Assertions
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.updateNonExistentExplanation()))
+                .isEqualTo(Constants.EXPLANATION_NOT_FOUND);
+    }
+
+    /**
+     * Test behavior when the user deletes all the explanations from an acronym. Such acronym is not deleted from the DB,
+     * but should be capable of acting as a regular acronym, e.g. it should accept new explanations upon adding, and
+     * it should not return any results when it contains no explanations.
+     */
+    @Test
+    public void removeAllExplanationAndReAddTest() {
+        JsonNode removeExplanation = JsonNodeHelper.alterArgumentText("!" + JsonNodeHelper.INITIAL_ACRONYM +
+                "=" + JsonNodeHelper.EXPLANATION + "=>");
+
+        // Removing explanation is already tested
+        helper.handleMessageAction(removeExplanation);
+        Assertions
+                .assertThat(helper.handleMessageAction(removeExplanation))
+                .as("Removing explanation from an already empty explanation set failed")
+                .isEqualTo(Constants.EXPLANATION_NOT_FOUND);
+
+        Assertions
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.getInitialAcronymLowercase()))
+                .as("An acronym with an empty explanation set should be evaluated as not found")
+                .contains("No acronym");
+
+        // Updating original acronym with a new explanation
+        helper.handleMessageAction(JsonNodeHelper.updateInitialAcronym());
+
+        Assertions
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.getInitialAcronymLowercase()))
+                .as("Re-initializing explanations for an acronym with originally empty explanation set failed")
+                .isEqualTo(JsonNodeHelper.EXPLANATION_UPDATE + "\n");
     }
 
     @Before

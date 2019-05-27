@@ -72,20 +72,20 @@ public class MessageHelper {
                 .orElse(null);
 
         if(e == null) {
-            return "no such explanation";
+            return Constants.EXPLANATION_NOT_FOUND;
         }
 
         if(!e.getAuthorEmail().equals(authorEmail)) {
-            return "Insufficient privileges";
+            return Constants.INSUFFICIENT_PRIVILEGES;
         }
 
         if(oldNewExplanation.length == 1) {
             a.getExplanations().remove(e);
             acronymExplanationDal.deleteExplanation(e);
-            resp = "Removed explanation";
+            resp = Constants.EXPLANATION_REMOVED;
         } else {
             e.setExplanation(oldNewExplanation[1]);
-            resp = "Updated explanation";
+            resp = Constants.EXPLANATION_UPDATED;
         }
         acronymExplanationDal.updateAcronym(a);
         return resp;
