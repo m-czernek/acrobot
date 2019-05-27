@@ -111,15 +111,14 @@ public class MessageHelper {
     }
 
     private String[] splitMessageToSaveAndTrim(String message) {
-        String[] res = message.split("=", 2);
-        trimArray(res);
-        return res;
+        return trimArray(message.split("=", 2));
     }
 
-    private void trimArray(String[] array) {
+    private String[] trimArray(String[] array) {
         for(int i = 0; i < array.length; i++) {
             array[i] = array[i].trim();
         }
+        return array;
     }
 
     private void mergeAcronym(Acronym acronym, String explanation, String authorEmail) {
