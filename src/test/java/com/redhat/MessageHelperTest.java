@@ -97,13 +97,13 @@ public class MessageHelperTest {
                 .isEqualTo("Updated explanation");
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getAcronymLowercase()))
-                .contains("BAR3");
+                .isEqualTo("BAR2" + "\n");
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getDeleteAcronymExplanation()))
                 .contains("Removed explanation");
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getAcronymLowercase()))
-                .doesNotContain("BAR3");
+                .doesNotContain("BAR2");
     }
 
     /**
@@ -113,10 +113,16 @@ public class MessageHelperTest {
     public void updateDeleteFailTest() {
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getUpdateAcronymExplanationDifferentUser()))
+                .as("Updating acronym with different email address did not fail properly")
                 .isEqualTo("Insufficient privileges");
 
         Assertions
-                .assertThat(helper.handleMessageAction(JsonNodeHelper.getDeleteAcronymExplanationDifferentUser()))
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.getAcronymLowercase()))
+                .contains(JsonNodeHelper.EXPLANATION);
+
+        Assertions
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.getDeleteAcronymInitialExplanationDifferentUser()))
+                .as("Deleting acronym with different email address did not fail properly")
                 .isEqualTo("Insufficient privileges");
     }
 

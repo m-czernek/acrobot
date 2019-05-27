@@ -69,7 +69,11 @@ public class MessageHelper {
                 .stream()
                 .filter(explanation -> explanation.getExplanation().equals(trimmedOldNewExplanation[0]))
                 .findFirst()
-                .get();
+                .orElse(null);
+
+        if(e == null) {
+            return "no such explanation";
+        }
 
         if(!e.getAuthorEmail().equals(authorEmail)) {
             return "Insufficient privileges";

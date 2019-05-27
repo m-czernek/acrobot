@@ -18,8 +18,9 @@ public class JsonNodeHelper {
     private static String INCORRECT_ACRONYM = "ACRONYM";
     private static String INCORRECT_ACRONYM_SAVE = "!" + INCORRECT_ACRONYM + "  ";
     private static String INCORRECT_ACRONYM_SAVE_WITH_EQUALS = "! " + INCORRECT_ACRONYM + " =   ";
-    private static String UPDATE_OLD_EXPLANATION = "!" + INITIAL_ACRONYM + "=" + EXPLANATION + "=>BAR3";
-    private static String DELETE_EXPLANATION = "!" + INITIAL_ACRONYM + "=BAR3=>";
+    private static String UPDATE_OLD_EXPLANATION = "!" + INITIAL_ACRONYM + "=" + EXPLANATION + "=>" + EXPLANATION_UPDATE;
+    private static String DELETE_EXPLANATION = "!" + INITIAL_ACRONYM + "="+ EXPLANATION_UPDATE + "=>";
+    private static String DELETE_ORIGINAL_EXPLANATION = "!" + INITIAL_ACRONYM + "="+ EXPLANATION + "=>";
 
     private static String SETUP_DB_ACRONYM = "! " +  INITIAL_ACRONYM + "  =  " + EXPLANATION;
 
@@ -69,12 +70,16 @@ public class JsonNodeHelper {
         return alterArgumentText(DELETE_EXPLANATION);
     }
 
+    public static JsonNode getDeleteAcronymInitialExplanation() {
+        return alterArgumentText(DELETE_ORIGINAL_EXPLANATION);
+    }
+
     public static JsonNode getUpdateAcronymExplanationDifferentUser() {
         return alterUser(getUpdateAcronymExplanation(), "rbecky@example.com");
     }
 
-    public static JsonNode getDeleteAcronymExplanationDifferentUser() {
-        return alterUser(getDeleteAcronymExplanation(), "rbecky@example.com");
+    public static JsonNode getDeleteAcronymInitialExplanationDifferentUser() {
+        return alterUser(getDeleteAcronymInitialExplanation(), "rbecky@example.com");
     }
 
     public static JsonNode getIncorrectAcronym() {
