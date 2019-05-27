@@ -62,12 +62,12 @@ public class MessageHelper {
         }
 
         String[] oldNewExplanation = acronymExplanationsArray[1].split("=>");
-        String[] trimmedOldNewExplanation = trimArray(oldNewExplanation);
+        trimArray(oldNewExplanation);
 
         Acronym a = acronyms.get(0);
         Explanation e = a.getExplanations()
                 .stream()
-                .filter(explanation -> explanation.getExplanation().equals(trimmedOldNewExplanation[0]))
+                .filter(explanation -> explanation.getExplanation().equals(oldNewExplanation[0]))
                 .findFirst()
                 .orElse(null);
 
@@ -79,12 +79,12 @@ public class MessageHelper {
             return "Insufficient privileges";
         }
 
-        if(trimmedOldNewExplanation.length == 1) {
+        if(oldNewExplanation.length == 1) {
             a.getExplanations().remove(e);
             acronymExplanationDal.deleteExplanation(e);
             resp = "Removed explanation";
         } else {
-            e.setExplanation(trimmedOldNewExplanation[1]);
+            e.setExplanation(oldNewExplanation[1]);
             resp = "Updated explanation";
         }
         acronymExplanationDal.updateAcronym(a);
@@ -111,14 +111,15 @@ public class MessageHelper {
     }
 
     private String[] splitMessageToSaveAndTrim(String message) {
-        return trimArray(message.split("=", 2));
+        String[] res = message.split("=", 2);
+        trimArray(res);
+        return res;
     }
 
-    private String[] trimArray(String[] array) {
+    private void trimArray(String[] array) {
         for(int i = 0; i < array.length; i++) {
             array[i] = array[i].trim();
         }
-        return array;
     }
 
     private void mergeAcronym(Acronym acronym, String explanation, String authorEmail) {

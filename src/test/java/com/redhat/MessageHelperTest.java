@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
 
 public class MessageHelperTest {
-    MessageHelper helper = new MessageHelper();
+    private MessageHelper helper = new MessageHelper();
 
     @ClassRule
     public static final EnvironmentVariables environmentVariables = new EnvironmentVariables()
@@ -50,10 +50,10 @@ public class MessageHelperTest {
     @Test
     public void setAcronymGetAcronymTest() {
         Assertions
-                .assertThat(helper.handleMessageAction(JsonNodeHelper.getAcronymLowercase()))
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.getInitialAcronymLowercase()))
                 .isEqualTo(JsonNodeHelper.EXPLANATION + "\n");
         Assertions
-                .assertThat(helper.handleMessageAction(JsonNodeHelper.getAcronymUppercase()))
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.getInitialAcronymUppercase()))
                 .isEqualTo(JsonNodeHelper.EXPLANATION + "\n");
     }
 
@@ -63,10 +63,9 @@ public class MessageHelperTest {
      */
     @Test
     public void updateAcronymTest() {
-        helper.handleMessageAction(JsonNodeHelper.getUpdateAcronym());
-
+        helper.handleMessageAction(JsonNodeHelper.updateInitialAcronym());
         Assertions
-                .assertThat(helper.handleMessageAction(JsonNodeHelper.getAcronymLowercase()))
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.getInitialAcronymLowercase()))
                 .contains(JsonNodeHelper.EXPLANATION)
                 .contains(JsonNodeHelper.EXPLANATION_UPDATE);
     }
@@ -93,17 +92,17 @@ public class MessageHelperTest {
     @Test
     public void updateDeleteTest() {
         Assertions
-                .assertThat(helper.handleMessageAction(JsonNodeHelper.getUpdateAcronymExplanation()))
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.updateAcronymExplanationSameEmail()))
                 .isEqualTo("Updated explanation");
         Assertions
-                .assertThat(helper.handleMessageAction(JsonNodeHelper.getAcronymLowercase()))
-                .isEqualTo("BAR2" + "\n");
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.getInitialAcronymLowercase()))
+                .isEqualTo(JsonNodeHelper.EXPLANATION_UPDATE + "\n");
         Assertions
-                .assertThat(helper.handleMessageAction(JsonNodeHelper.getDeleteAcronymExplanation()))
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.deleteUpdatedAcronymExplanationSameEmail()))
                 .contains("Removed explanation");
         Assertions
-                .assertThat(helper.handleMessageAction(JsonNodeHelper.getAcronymLowercase()))
-                .doesNotContain("BAR2");
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.getInitialAcronymLowercase()))
+                .doesNotContain(JsonNodeHelper.EXPLANATION_UPDATE);
     }
 
     /**
@@ -117,23 +116,31 @@ public class MessageHelperTest {
                 .isEqualTo("Insufficient privileges");
 
         Assertions
-                .assertThat(helper.handleMessageAction(JsonNodeHelper.getAcronymLowercase()))
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.getInitialAcronymLowercase()))
+                .as("Even though we returned insufficient privileges, the update was persisted")
                 .contains(JsonNodeHelper.EXPLANATION);
 
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getDeleteAcronymInitialExplanationDifferentUser()))
                 .as("Deleting acronym with different email address did not fail properly")
                 .isEqualTo("Insufficient privileges");
+
+        Assertions
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.getInitialAcronymLowercase()))
+                .as("Even though we returned insufficient privileges, the delete was persisted")
+                .contains(JsonNodeHelper.EXPLANATION);
     }
 
     @Before
     public void setupDB() {
+        // Connecting will re-create all tables, and we insert an initial acronym for testing purposes
         AdministrativeMessageHelper.handleAdminMessage("connect");
         helper.handleMessageAction(JsonNodeHelper.getSetupDb());
     }
 
     @After
     public void cleanDB() {
+        // Disconnecting will drop all tables, and all changes to the DB
         AdministrativeMessageHelper.handleAdminMessage("disconnect");
     }
 }
