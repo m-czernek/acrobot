@@ -14,12 +14,21 @@ public class Constants {
             " to save an explanation, or only $acronym to get an explanation";
     public static final String ACRONYM_SAVED = "Thank you, I have saved your acronym.";
     public static final String ACRONYM_UPDATED = "Thank you, I have updated the acronym";
+    public static final String INSUFFICIENT_PRIVILEGES = "You cannot update acronyms that you did not save. Aborting!";
+    public static final String EXPLANATION_UPDATED = "Explanation updated. Thank you!";
+    public static final String EXPLANATION_REMOVED = "Explanation removed. Thank you!";
+    public static final String EXPLANATION_NOT_FOUND = "No such explanation with given Acronym. Are you sure the acronym is correct?";
+    public static final String ACRONYM_NOT_FOUND = "No such acronym found.";
+
     public static final String HELP_TEXT = "You are interacting with Acrobot. \n\n" +
             "Actions:\n" +
             "*Get an acronym explanation:* `@Acrobot acronym` \n" +
             "*Insert an acronym:* `@Acrobot !acronym=explanation` \n" +
-            "You can update an already existing acronym the same way as inserting. \n" +
-            "All of the actions work in a direct message without tagging @Acrobot. \n" +
+            "*Change old explanation to a new one:* `@Acrobot !acronym=old explanation => new explanation` \n" +
+            "*Delete old explanation: `@Acrobot !acronym = old explanation =>` \n" +
+            "You can add an explanation to an already existing acronym the same way as inserting. \n" +
+            "All of the actions work in a direct message without tagging `@Acrobot`. Whitespaces shouldn't matter," +
+            "and you can input acronym in both lower- and uppercase; it will be matched regardless of the capitalisation. \n\n" +
             "Acrobot is implemented by Marek Czernek. You can find documentation and file issues or suggest improvements at " +
             "https://github.com/m-czernek/acrobot";
 }

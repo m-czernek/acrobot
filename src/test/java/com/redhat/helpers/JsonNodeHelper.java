@@ -9,16 +9,31 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 
 public class JsonNodeHelper {
-    private static ObjectMapper mapper = new ObjectMapper();
-    private static JsonFactory factory = mapper.getFactory();
-    private static String ACRONYM = "FOO1";
-    public static String EXPLANATION = "BAR1";
-    public static String EXPLANATION_UPDATE = "BAR2";
-    private static String SAVE_ACRONYM = "!  " + ACRONYM + "  =  " + EXPLANATION;
-    private static String UPDATE_ACRONYM = "! " + ACRONYM + " = " + EXPLANATION_UPDATE;
-    private static String INCORRECT_ACRONYM = "ACRONYM";
-    private static String INCORRECT_ACRONYM_SAVE = "!" + INCORRECT_ACRONYM + "  ";
-    private static String INCORRECT_ACRONYM_SAVE_WITH_EQUALS = "! " + INCORRECT_ACRONYM + " =   ";
+    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final JsonFactory factory = mapper.getFactory();
+    public static final String INITIAL_ACRONYM = "FOO1";
+    public static final String EXPLANATION = "BAR1";
+    public static final String EXPLANATION_UPDATE = "BAR2";
+    public static final String NON_EXISTENT_EXPLANATION = "BAR3";
+
+    // Incorrect inputs
+    private static final String INCORRECT_ACRONYM = "ACRONYM";
+    private static final String INCORRECT_ACRONYM_SAVE = "!" + INCORRECT_ACRONYM + "  ";
+    private static final String INCORRECT_ACRONYM_SAVE_WITH_EQUALS = "! " + INCORRECT_ACRONYM + " =   ";
+
+    // Correct update inputs
+    private static final String UPDATE_ACRONYM = "! " + INITIAL_ACRONYM + " = " + EXPLANATION_UPDATE;
+    private static final String UPDATE_OLD_EXPLANATION = "!" + INITIAL_ACRONYM + "  =   " + EXPLANATION + "=>" + EXPLANATION_UPDATE;
+
+    // Delete inputs
+    private static final String DELETE_EXPLANATION = "!" + INITIAL_ACRONYM + "   =    "+ EXPLANATION_UPDATE + "=>";
+    private static final String DELETE_ORIGINAL_EXPLANATION = "!" + INITIAL_ACRONYM + "    =    "+ EXPLANATION + "=>";
+
+    // Setup acronym
+    private static final String SETUP_DB_ACRONYM = "! " +  INITIAL_ACRONYM + "  =  " + EXPLANATION;
+
+    // Misc
+    private static final String NON_STANDARD_EMAIL = "rbecky@example.com";
 
     public static JsonNode getJsonNodeWithoutMessageArgumentText() {
         try {
@@ -34,19 +49,19 @@ public class JsonNodeHelper {
         return alterArgumentText("help");
     }
 
-    public static JsonNode getAddAcronymRequest() {
-        return alterArgumentText(SAVE_ACRONYM);
+    public static JsonNode getSetupDb() {
+        return alterArgumentText(SETUP_DB_ACRONYM);
     }
 
-    public static JsonNode getAcronymLowercase() {
-        return alterArgumentText(ACRONYM.toLowerCase());
+    public static JsonNode getInitialAcronymLowercase() {
+        return alterArgumentText(INITIAL_ACRONYM.toLowerCase());
     }
 
-    public static JsonNode getAcronymUppercase() {
-        return alterArgumentText(ACRONYM);
+    public static JsonNode getInitialAcronymUppercase() {
+        return alterArgumentText(INITIAL_ACRONYM);
     }
 
-    public static JsonNode getUpdateAcronym() {
+    public static JsonNode updateInitialAcronym() {
         return alterArgumentText(UPDATE_ACRONYM);
     }
 
@@ -58,16 +73,48 @@ public class JsonNodeHelper {
         return alterArgumentText(INCORRECT_ACRONYM_SAVE_WITH_EQUALS);
     }
 
+    public static JsonNode updateAcronymExplanationSameEmail() {
+        return alterArgumentText(UPDATE_OLD_EXPLANATION);
+    }
+
+    public static JsonNode deleteUpdatedAcronymExplanationSameEmail() {
+        return alterArgumentText(DELETE_EXPLANATION);
+    }
+
+    public static JsonNode deleteAcronymInitialExplanation() {
+        return alterArgumentText(DELETE_ORIGINAL_EXPLANATION);
+    }
+
+    public static JsonNode getUpdateAcronymExplanationDifferentUser() {
+        return alterUser(updateAcronymExplanationSameEmail(), NON_STANDARD_EMAIL);
+    }
+
+    public static JsonNode getDeleteAcronymInitialExplanationDifferentUser() {
+        return alterUser(deleteAcronymInitialExplanation(), NON_STANDARD_EMAIL);
+    }
+
+    public static JsonNode updateNonExistentExplanation() {
+        return alterArgumentText("!" + INITIAL_ACRONYM + "=" + NON_EXISTENT_EXPLANATION + "=>");
+    }
+
     public static JsonNode getIncorrectAcronym() {
         return alterArgumentText(INCORRECT_ACRONYM);
     }
 
-    private static ObjectNode alterArgumentText(String argumentTextString) {
+    public static ObjectNode alterArgumentText(String argumentTextString) {
         JsonNode node = JsonNodeHelper.getJsonNodeWithoutMessageArgumentText();
         ObjectNode nodeHelpText = ((ObjectNode) node);
-        ObjectNode message = (ObjectNode) nodeHelpText.get("message");
-        message.put("argumentText", argumentTextString);
-        nodeHelpText.set("message", message);
+        ObjectNode messageNode = (ObjectNode) nodeHelpText.get("message");
+        messageNode.put("argumentText", argumentTextString);
+        nodeHelpText.set("message", messageNode);
+        return nodeHelpText;
+    }
+
+    private static ObjectNode alterUser(JsonNode node, String user) {
+        ObjectNode nodeHelpText = ((ObjectNode) node);
+        ObjectNode userNode = (ObjectNode) nodeHelpText.get("user");
+        userNode.put("email", user);
+        nodeHelpText.set("user", userNode);
         return nodeHelpText;
     }
 

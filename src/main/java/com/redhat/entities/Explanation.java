@@ -21,7 +21,7 @@ public class Explanation implements Serializable {
     private String explanation;
 
     @ManyToOne
-    @JoinColumn(name="acronym_id", nullable=false)
+    @JoinColumn(name="acronym_id")
     private Acronym acronym;
 
     // A flag for manual checks of explanations

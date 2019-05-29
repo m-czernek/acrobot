@@ -1,16 +1,17 @@
 package com.redhat.persistence;
 
 import com.redhat.entities.Acronym;
+import com.redhat.entities.Explanation;
 
 import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
 
-public class AcronymDAL {
+public class AcronymExplanationDal {
 
     private EntityManager em;
 
-    public AcronymDAL() {
+    public AcronymExplanationDal() {
         init();
     }
 
@@ -54,6 +55,20 @@ public class AcronymDAL {
             em.getTransaction().rollback();
         }
         close();
+    }
+
+    public void deleteExplanation(Explanation explanation) {
+        init();
+        em.getTransaction().begin();
+        try {
+            explanation.setAcronym(null);
+            explanation = em.merge(explanation);
+            em.remove(explanation);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            em.getTransaction().rollback();
+        }
     }
 
     public void init() {

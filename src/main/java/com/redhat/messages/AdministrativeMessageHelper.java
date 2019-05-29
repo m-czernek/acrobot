@@ -4,7 +4,7 @@ import com.redhat.persistence.PersistenceManager;
 
 public class AdministrativeMessageHelper {
 
-    static String handleAdminMessage(String msg) {
+    public static String handleAdminMessage(String msg) {
         if(msg.toLowerCase().contains("disconnect")) {
             PersistenceManager.INSTANCE.close();
             return "Disconnected from database";
