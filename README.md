@@ -5,6 +5,23 @@ of acronyms within the company.
 
 ![Image of Acrobot saving and answering an acronym](imgs/gchat.png)
 
+![Image of Acrobot editing and removing acronym explanations](imgs/showcase.gif)
+
+## Usage
+
+Acrobot is capable of multiple actions:
+
+* Saving acronym: `!acronym = explanation`
+* Getting an acronym explanation: `acronym`
+* Modifying acronym explanation: `!acronym = explanation => new explanation`
+* Removing acronym explanation: `!acronym = explanation =>`
+
+White spaces do not matter. If you are interacting with acrobot in a room,
+do not forget to tag the bot, e.g. `@Acrobot !acronym = explanation`.
+
+You can change and remove only those explanations that you entered into the
+database.
+
 ## Architecture
 
 Acrobot is a simple application, using:
