@@ -18,6 +18,7 @@ public class Constants {
     public static final String EXPLANATION_UPDATED = "Explanation updated. Thank you!";
     public static final String EXPLANATION_REMOVED = "Explanation removed. Thank you!";
     public static final String EXPLANATION_NOT_FOUND = "No such explanation with given Acronym. Are you sure the acronym is correct?";
+    public static final String ACRONYM_NOT_FOUND = "No such acronym found.";
 
     public static final String HELP_TEXT = "You are interacting with Acrobot. \n\n" +
             "Actions:\n" +

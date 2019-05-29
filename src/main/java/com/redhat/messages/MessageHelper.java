@@ -58,7 +58,7 @@ public class MessageHelper {
 
         List<Acronym> acronyms = acronymExplanationDal.getAcronymsByName(acronymExplanationsArray[0]);
         if(acronyms.isEmpty()) {
-            return "No such acronym found.";
+            return Constants.ACRONYM_NOT_FOUND;
         }
 
         String[] oldNewExplanation = acronymExplanationsArray[1].split("=>");
@@ -137,7 +137,7 @@ public class MessageHelper {
             }
         }
         if(resp.isEmpty()) {
-            resp = "No acronym " + message + " found.";
+            resp = Constants.ACRONYM_NOT_FOUND;
         }
         return resp;
     }

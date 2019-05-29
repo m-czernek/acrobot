@@ -84,7 +84,7 @@ public class MessageHelperTest {
                 .isEqualTo(Constants.INCORRECT_FORMAT_FOR_SAVING_ACRONYM);
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getIncorrectAcronym()))
-                .contains("No acronym");
+                .isEqualTo(Constants.ACRONYM_NOT_FOUND);
     }
 
     /**
@@ -163,7 +163,7 @@ public class MessageHelperTest {
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getInitialAcronymLowercase()))
                 .as("An acronym with an empty explanation set should be evaluated as not found")
-                .contains("No acronym");
+                .isEqualTo(Constants.ACRONYM_NOT_FOUND);
 
         // Updating original acronym with a new explanation
         helper.handleMessageAction(JsonNodeHelper.updateInitialAcronym());
