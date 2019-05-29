@@ -39,7 +39,7 @@ public class MessageHelper {
             }
 
             if(message.contains("=>")) {
-                resp = updateAcronymOrRemoveExplanation(message, authorEmail);
+                resp = updateOrRemoveExplanation(message, authorEmail);
             } else {
                 resp = saveOrMergeAcronym(message, authorEmail);
             }
@@ -52,7 +52,7 @@ public class MessageHelper {
         return resp;
     }
 
-    private String updateAcronymOrRemoveExplanation(String message, String authorEmail) {
+    private String updateOrRemoveExplanation(String message, String authorEmail) {
         String resp;
         String[] acronymExplanationsArray = splitMessageToSaveAndTrim(message);
 
