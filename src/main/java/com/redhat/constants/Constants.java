@@ -23,8 +23,11 @@ public class Constants {
             "Actions:\n" +
             "*Get an acronym explanation:* `@Acrobot acronym` \n" +
             "*Insert an acronym:* `@Acrobot !acronym=explanation` \n" +
-            "You can update an already existing acronym the same way as inserting. \n" +
-            "All of the actions work in a direct message without tagging @Acrobot. \n" +
+            "*Change old explanation to a new one:* `@Acrobot !acronym=old explanation => new explanation` \n" +
+            "*Delete old explanation: `@Acrobot !acronym = old explanation =>` \n" +
+            "You can add an explanation to an already existing acronym the same way as inserting. \n" +
+            "All of the actions work in a direct message without tagging `@Acrobot`. Whitespaces shouldn't matter," +
+            "and you can input acronym in both lower- and uppercase; it will be matched regardless of the capitalisation. \n\n" +
             "Acrobot is implemented by Marek Czernek. You can find documentation and file issues or suggest improvements at " +
             "https://github.com/m-czernek/acrobot";
 }

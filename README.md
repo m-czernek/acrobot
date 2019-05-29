@@ -9,7 +9,7 @@ of acronyms within the company.
 
 Acrobot is a simple application, using:
 
-* Java
+* Java (tested against OpenJDK 1.8 and OpenJDK 11)
 * Hibernate
 * MySQL
 * Kubernetes/OpenShift for deployment #todo OCP template
