@@ -73,15 +73,6 @@ you created. If you are deploying Acrobot on Kubernetes/OpenShift, you will have
 1. export **JDBC_URL**, **JDBC_USER**, and **JDBC_PASSWORD** for the DB connection details.
 1. export **PROJECT_ID** and **SUBSCRIPTION_ID** which match your Google project and subscription created earlier.
 
-## Usage
-
-You can interact with Acrobot in several ways:
-
-* You can send an acronym in a private message, or tag Acrobot and send the acronym in a room.
-Acrobot will look it up in its database and returns the result.
-* You can add an acronym explanation in the form of `!lol=laugh out loud`, that is `!$acronym=$explanation`.
-* You can send `help` for some basic explanation and help.
-
 ## Credits
 
 Author: Marek Czernek.
