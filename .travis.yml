@@ -4,3 +4,5 @@ jdk:
   - openjdk8
 notifications:
   email: false
+script:
+  - mvn clean test
