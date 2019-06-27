@@ -8,7 +8,8 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
             <property name="javax.persistence.jdbc.url" value="placeholder" />
             <property name="javax.persistence.jdbc.user" value="placeholder" />
             <property name="javax.persistence.jdbc.password" value="placeholder" />
-            <property name="hibernate.show_sql" value="true" />
+            <!-- switch to true for debug testing --> 
+            <property name="hibernate.show_sql" value="false" />
             <property name="hibernate.format_sql" value="true" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
             <property name="hibernate.current_session_context_class" value="thread" />
