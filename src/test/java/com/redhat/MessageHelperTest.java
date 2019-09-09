@@ -94,7 +94,7 @@ public class MessageHelperTest {
     public void updateDeleteTest() {
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.updateAcronymExplanationSameEmail()))
-                .isEqualTo(Constants.EXPLANATION_UPDATED);
+                .isEqualTo(Constants.ACRONYM_UPDATED);
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getInitialAcronymLowercase()))
                 .isEqualTo(JsonNodeHelper.EXPLANATION_UPDATE + "\n");

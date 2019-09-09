@@ -81,13 +81,11 @@ public class MessageHelper {
 
         if(oldNewExplanation.length == 1) {
             a.getExplanations().remove(e);
-            acronymExplanationDal.deleteExplanation(e);
-            resp = Constants.EXPLANATION_REMOVED;
+            resp = acronymExplanationDal.deleteExplanation(e);
         } else {
             e.setExplanation(oldNewExplanation[1]);
-            resp = Constants.EXPLANATION_UPDATED;
+            resp = acronymExplanationDal.updateAcronym(a);
         }
-        acronymExplanationDal.updateAcronym(a);
         return resp;
     }
 
@@ -96,12 +94,10 @@ public class MessageHelper {
         String[] toSave = splitMessageToSaveAndTrim(message);
         List<Acronym> list = acronymExplanationDal.getAcronymsByName(toSave[0]);
         if(list.isEmpty()) {
-            saveAcronym(toSave, authorEmail);
-            resp = Constants.ACRONYM_SAVED;
+            resp = saveAcronym(toSave, authorEmail);
         }
         else {
-            mergeAcronym(list.get(0), toSave[1], authorEmail);
-            resp = Constants.ACRONYM_UPDATED;
+            resp = mergeAcronym(list.get(0), toSave[1], authorEmail);
         }
         return resp;
     }
@@ -121,12 +117,12 @@ public class MessageHelper {
         return array;
     }
 
-    private void mergeAcronym(Acronym acronym, String explanation, String authorEmail) {
+    private String mergeAcronym(Acronym acronym, String explanation, String authorEmail) {
         Explanation e = new Explanation(explanation);
         e.setAcronym(acronym);
         e.setAuthorEmail(authorEmail);
         acronym.getExplanations().add(e);
-        acronymExplanationDal.updateAcronym(acronym);
+        return acronymExplanationDal.updateAcronym(acronym);
     }
 
     private String getAcronymAsString(String message) {
@@ -142,7 +138,7 @@ public class MessageHelper {
         return resp;
     }
 
-    private void saveAcronym(String[] toSave, String authorEmail) {
+    private String saveAcronym(String[] toSave, String authorEmail) {
         Explanation e = new Explanation(toSave[1]);
         e.setAuthorEmail(authorEmail);
         Acronym a = new Acronym(toSave[0]);
@@ -150,6 +146,6 @@ public class MessageHelper {
         Set<Explanation> set = new HashSet<>();
         set.add(e);
         a.setExplanations(set);
-        acronymExplanationDal.saveAcronym(a);
+        return acronymExplanationDal.saveAcronym(a);
     }
 }
