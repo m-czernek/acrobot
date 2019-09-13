@@ -105,15 +105,14 @@ public class AcronymExplanationDal {
 
     private String getStackTraceAsString(Throwable e) {
         StringBuilder sb = new StringBuilder();
-        for (StackTraceElement element : e.getStackTrace()) {
-            sb.append(element.toString());
-            sb.append("\n");
-        }
+        sb.append(e.getMessage());
+        sb.append("\n");
 
         if(e.getCause() != null) {
-            sb.append("Caused by: \n");
+            sb.append("Caused by: ");
             sb.append(getStackTraceAsString(e.getCause()));
         }
+
         return sb.toString();
     }
 
