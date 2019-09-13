@@ -42,7 +42,7 @@ public class AcronymExplanationDal {
         } catch (Exception e) {
             e.printStackTrace();
             em.getTransaction().rollback();
-            return "Could not save the acronym: ```\n" + getStackTraceAsString(e) + "\n```";
+            return "Could not save the acronym: ```\n" + getStackTraceMaxSize(e, 4000) + "\n```";
         } finally {
             close();
         }
@@ -58,7 +58,7 @@ public class AcronymExplanationDal {
         } catch (Exception e) {
             e.printStackTrace();
             em.getTransaction().rollback();
-            return "Could not update the acronym: ```\n" + getStackTraceAsString(e) + "\n```";
+            return "Could not update the acronym: ```\n" + getStackTraceMaxSize(e, 4000) + "\n```";
         } finally {
             close();
         }
@@ -76,7 +76,7 @@ public class AcronymExplanationDal {
         } catch (Exception e) {
             e.printStackTrace();
             em.getTransaction().rollback();
-            return "Could not delete the acronym: ```\n" + getStackTraceAsString(e) + "\n```";
+            return "Could not delete the acronym: ```\n" + getStackTraceMaxSize(e, 4000) + "\n```";
         } finally {
             close();
         }
@@ -93,6 +93,16 @@ public class AcronymExplanationDal {
         this.em = null;
     }
 
+    private String getStackTraceMaxSize(Throwable e, int maxSize) {
+        String truncatedMsg = "\nThis stacktrace has been truncated...";
+        String stackTrace = getStackTraceAsString(e);
+        if(stackTrace.length() > maxSize) {
+            stackTrace = stackTrace.substring(0,maxSize - truncatedMsg.length());
+            stackTrace += truncatedMsg;
+        }
+        return stackTrace;
+    }
+
     private String getStackTraceAsString(Throwable e) {
         StringBuilder sb = new StringBuilder();
         for (StackTraceElement element : e.getStackTrace()) {
@@ -104,7 +114,6 @@ public class AcronymExplanationDal {
             sb.append("Caused by: \n");
             sb.append(getStackTraceAsString(e.getCause()));
         }
-
         return sb.toString();
     }
 
