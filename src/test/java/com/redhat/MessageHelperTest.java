@@ -174,6 +174,14 @@ public class MessageHelperTest {
                 .isEqualTo(JsonNodeHelper.EXPLANATION_UPDATE + "\n");
     }
 
+    @Test
+    public void exceptionPropagationTest() {
+        Assertions
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.getDatabaseExceptionCausingMessage()))
+                .as("An acronym with explanation over 255 characters should return an exception to the user")
+                .contains("Value too long for column");
+    }
+
     @Before
     public void setupDB() {
         // Connecting will re-create all tables, and we insert an initial acronym for testing purposes

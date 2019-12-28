@@ -73,6 +73,16 @@ you created. If you are deploying Acrobot on Kubernetes/OpenShift, you will have
 1. export **JDBC_URL**, **JDBC_USER**, and **JDBC_PASSWORD** for the DB connection details.
 1. export **PROJECT_ID** and **SUBSCRIPTION_ID** which match your Google project and subscription created earlier.
 
+## Testing
+
+Acrobot contains unit tests with an in-memory H2 database. You should execute all tests before pushing new code.
+You can execute tests by issuing: `mvn clean test`. To execute a particular test, you can specify the `test`
+parameter in the format of `ClassName#TestName`, for example:
+ 
+ `mvn clean test -Dtest=MessageHelperTest#exceptionPropagationTest`
+
+All new features should have tests.
+
 ## Credits
 
 Author: Marek Czernek.

@@ -118,6 +118,18 @@ public class JsonNodeHelper {
         return nodeHelpText;
     }
 
+    public static JsonNode getDatabaseExceptionCausingMessage() {
+        return alterArgumentText("!" + INITIAL_ACRONYM + "=" + getTooLongString());
+    }
+
+    private static String getTooLongString() {
+        StringBuilder sb = new StringBuilder();
+        while(sb.length() < 256) {
+            sb.append("AAAA AAAA AAAAAA AAAA AAAA AAAAA");
+        }
+        return sb.toString();
+    }
+
     private static String getJsonStringNoArgumentText() {
         return "{\n" +
                 "    \"type\": \"MESSAGE\",\n" +
