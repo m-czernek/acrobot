@@ -28,7 +28,7 @@ database.
 
 Acrobot is a simple application, using:
 
-* Java (tested against OpenJDK 1.8 and OpenJDK 11)
+* Java (tested against OpenJDK 11)
 * Hibernate
 * MySQL
 * Kubernetes/OpenShift for deployment #todo OCP template
