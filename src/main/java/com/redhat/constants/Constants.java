@@ -10,10 +10,10 @@ public class Constants {
     // Response templates
     public static final String RESPONSE_URL_TEMPLATE = "https://chat.googleapis.com/v1/__SPACE_ID__/messages";
     public static final String ADDED_RESPONSE = "Thank you for adding me! Send `@Acrobot help` for more information about me.";
-    public static final String INCORRECT_FORMAT_FOR_SAVING_ACRONYM = "Please enter the acronym in format of !$acronym=$explanation" +
-            " to save an explanation, or only $acronym to get an explanation";
+    public static final String INCORRECT_FORMAT_FOR_SAVING_ACRONYM = "Please enter the acronym in format of ! `acronym` = `explanation`" +
+            " to save an explanation, or only `acronym` to get an explanation. Alternatively, send `help` for more information.";
     public static final String ACRONYM_SAVED = "Thank you, I have saved your acronym.";
-    public static final String ACRONYM_UPDATED = "Thank you, I have updated the acronym";
+    public static final String ACRONYM_UPDATED = "Thank you, I have updated the acronym.";
     public static final String INSUFFICIENT_PRIVILEGES = "You cannot update acronyms that you did not save. Aborting!";
     public static final String EXPLANATION_REMOVED = "Explanation removed. Thank you!";
     public static final String EXPLANATION_NOT_FOUND = "No such explanation with given Acronym. Are you sure the acronym is correct?";
