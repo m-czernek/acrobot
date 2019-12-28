@@ -28,7 +28,7 @@ database.
 
 Acrobot is a simple application, using:
 
-* Java (tested against OpenJDK 1.8 and OpenJDK 11)
+* Java (tested against OpenJDK 11)
 * Hibernate
 * MySQL
 * Kubernetes/OpenShift for deployment #todo OCP template
@@ -72,6 +72,16 @@ Acrobot has a few dependencies:
 you created. If you are deploying Acrobot on Kubernetes/OpenShift, you will have to inject the file either using a secret, or a config map, into your pod.
 1. export **JDBC_URL**, **JDBC_USER**, and **JDBC_PASSWORD** for the DB connection details.
 1. export **PROJECT_ID** and **SUBSCRIPTION_ID** which match your Google project and subscription created earlier.
+
+## Testing
+
+Acrobot contains unit tests with an in-memory H2 database. You should execute all tests before pushing new code.
+You can execute tests by issuing: `mvn clean test`. To execute a particular test, you can specify the `test`
+parameter in the format of `ClassName#TestName`, for example:
+ 
+ `mvn clean test -Dtest=MessageHelperTest#exceptionPropagationTest`
+
+All new features should have tests.
 
 ## Credits
 

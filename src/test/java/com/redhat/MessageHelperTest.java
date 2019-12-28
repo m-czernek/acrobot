@@ -94,7 +94,7 @@ public class MessageHelperTest {
     public void updateDeleteTest() {
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.updateAcronymExplanationSameEmail()))
-                .isEqualTo(Constants.EXPLANATION_UPDATED);
+                .isEqualTo(Constants.ACRONYM_UPDATED);
         Assertions
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getInitialAcronymLowercase()))
                 .isEqualTo(JsonNodeHelper.EXPLANATION_UPDATE + "\n");
@@ -172,6 +172,14 @@ public class MessageHelperTest {
                 .assertThat(helper.handleMessageAction(JsonNodeHelper.getInitialAcronymLowercase()))
                 .as("Re-initializing explanations for an acronym with originally empty explanation set failed")
                 .isEqualTo(JsonNodeHelper.EXPLANATION_UPDATE + "\n");
+    }
+
+    @Test
+    public void exceptionPropagationTest() {
+        Assertions
+                .assertThat(helper.handleMessageAction(JsonNodeHelper.getDatabaseExceptionCausingMessage()))
+                .as("An acronym with explanation over 255 characters should return an exception to the user")
+                .contains("Value too long for column");
     }
 
     @Before
