@@ -6,6 +6,7 @@ public class Constants {
     public static final String SUBSCRIPTION_ID = System.getenv("SUBSCRIPTION_ID");
     public static final String SUDO_PASSWORD = System.getenv("SUDO_PASSWORD");
     public static final String HANGOUTS_CHAT_API_SCOPE = "https://www.googleapis.com/auth/chat.bot";
+    public static final String YAML_SOURCE = "AcroBot/data/abbrev.yaml"; // ClassLoader path
 
     // Response templates
     public static final String RESPONSE_URL_TEMPLATE = "https://chat.googleapis.com/v1/__SPACE_ID__/messages";
