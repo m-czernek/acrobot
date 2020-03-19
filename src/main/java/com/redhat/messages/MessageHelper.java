@@ -2,6 +2,7 @@ package com.redhat.messages;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.redhat.constants.Constants;
+import com.redhat.constants.MessageType;
 import com.redhat.entities.Acronym;
 import com.redhat.entities.Explanation;
 import com.redhat.persistence.AcronymExplanationDal;
@@ -15,41 +16,29 @@ public class MessageHelper {
     private AcronymExplanationDal acronymExplanationDal = new AcronymExplanationDal();
 
     public String handleMessageAction(JsonNode eventJson) {
-        String resp;
-        String message;
         String authorEmail = eventJson.get("user").get("email").asText();
+        MessageType type = new MessageTypeHelper().determineMessageAction(eventJson);
 
-        try {
-            message = eventJson.get("message").get("argumentText").asText().trim();
-        } catch (NullPointerException e) {
-            // Acrobot was added via mention to a room, and has no argument text
-            return Constants.ADDED_RESPONSE;
+        if(type == MessageType.ADDED_TO_ROOM) {
+            return type.eventType;
         }
 
-        if(message.startsWith(Constants.SUDO_PASSWORD)) {
-            return AdministrativeMessageHelper.handleAdminMessage(message);
+        String message = eventJson.get("message").get("argumentText").asText().trim();
+
+        switch (type){
+            case SUDO_RESPONSE:
+                return AdministrativeMessageHelper.handleAdminMessage(message);
+            case UPDATE_OR_REMOVE:
+                // Message starts with "!"
+                return updateOrRemoveExplanation(message.substring(1), authorEmail);
+            case SAVE_OR_MERGE:
+                // Message starts with "!"
+                return saveOrMergeAcronym(message.substring(1), authorEmail);
+            case GET_ACRONYM:
+                return getAcronymAsString(message);
+            default:
+                return type.eventType;
         }
-
-        if(message.startsWith("!")) {
-            message = message.substring(1);
-
-            // Validate message
-            if (!isMessageValid(message)) {
-                return Constants.INCORRECT_FORMAT_FOR_SAVING_ACRONYM;
-            }
-
-            if(message.contains("=>")) {
-                resp = updateOrRemoveExplanation(message, authorEmail);
-            } else {
-                resp = saveOrMergeAcronym(message, authorEmail);
-            }
-
-        } else if (message.equals("help")) {
-            resp = Constants.HELP_TEXT;
-        } else {
-            resp = getAcronymAsString(message);
-        }
-        return resp;
     }
 
     private String updateOrRemoveExplanation(String message, String authorEmail) {
@@ -100,10 +89,6 @@ public class MessageHelper {
             resp = mergeAcronym(list.get(0), toSave[1], authorEmail);
         }
         return resp;
-    }
-
-    private boolean isMessageValid(String message) {
-        return message.contains("=") && (!message.trim().endsWith("="));
     }
 
     private String[] splitMessageToSaveAndTrim(String message) {
