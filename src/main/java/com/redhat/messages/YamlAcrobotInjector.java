@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class YamlAcrobotInjector {
     private YamlDal dal = new YamlDal();
-    String res = "\n~~~ Found acronym in YAML read-only database~~~\n";
+    String res = "\n_Found requested acronym in the IRC database. Send @Acrobot help for more information about this feature._\n";
 
     public String injectYamlAcronyms(JsonNode eventJson, String originalMessage) {
         String requestedAcronym = eventJson.get("message").get("argumentText").asText().trim();

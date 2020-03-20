@@ -31,5 +31,7 @@ public class Constants {
             "All of the actions work in a direct message without tagging `@Acrobot`. Whitespaces shouldn't matter," +
             "and you can input acronym in both lower- and uppercase; it will be matched regardless of the capitalisation. \n\n" +
             "Acrobot is implemented by Marek Czernek. You can find documentation and file issues or suggest improvements at " +
-            "https://github.com/m-czernek/acrobot";
+            "https://github.com/m-czernek/acrobot \n\n" +
+            "Currently, Acrobot is testing injecting IRC acronym database into the results. For feedback, comments, or suggestions "+
+            "about the function, visit https://github.com/m-czernek/acrobot/pull/12";
 }
