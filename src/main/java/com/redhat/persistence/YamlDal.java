@@ -32,10 +32,10 @@ public class YamlDal {
         Set<Acronym> res = new HashSet<>();
         for(String key : yamlDatabase.keySet()) {
             Map<String, String> databaseSection = yamlDatabase.get(key);
-            if(databaseSection.containsKey(name.toUpperCase())) {
+            if(databaseSection.containsKey(name)) {
                 Acronym a = new Acronym(name);
                 Set<Explanation> e = new HashSet<>();
-                e.add(new Explanation(databaseSection.get(name.toUpperCase())));
+                e.add(new Explanation(databaseSection.get(name)));
                 a.setExplanations(e);
                 res.add(a);
             }
