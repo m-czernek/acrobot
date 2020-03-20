@@ -16,6 +16,7 @@ import com.google.cloud.pubsub.v1.AckReplyConsumer;
 import com.google.cloud.pubsub.v1.MessageReceiver;
 import com.google.pubsub.v1.PubsubMessage;
 import com.redhat.constants.Constants;
+import com.redhat.constants.MessageType;
 
 import java.io.FileInputStream;
 import java.util.Collections;
@@ -27,6 +28,7 @@ public class AcroBot implements MessageReceiver {
     private HttpTransport httpTransport;
     private HttpRequestFactory requestFactory;
     private MessageHelper helper;
+    private YamlAcrobotInjector yamlAcrobotInjector;
 
     public AcroBot() throws Exception {
         credential = GoogleCredential
@@ -35,6 +37,7 @@ public class AcroBot implements MessageReceiver {
         httpTransport = GoogleNetHttpTransport.newTrustedTransport();
         requestFactory = httpTransport.createRequestFactory(credential);
         helper = new MessageHelper();
+        yamlAcrobotInjector = new YamlAcrobotInjector();
     }
 
     // Called when a message is received by the subscriber.
@@ -68,7 +71,13 @@ public class AcroBot implements MessageReceiver {
                     break;
                 }
             case "MESSAGE":
-                responseNode.put("text", helper.handleMessageAction(eventJson));
+                String response = helper.handleMessageAction(eventJson);
+
+                if(MessageTypeHelper.determineMessageAction(eventJson) == MessageType.GET_ACRONYM) {
+                    response = yamlAcrobotInjector.injectYamlAcronyms(eventJson, response);
+                }
+
+                responseNode.put("text", response);
 
                 // In case of message, post the response in the same thread.
                 ObjectNode threadNode = jsonNodeFactory.objectNode();

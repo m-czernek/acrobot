@@ -6,14 +6,15 @@ import com.redhat.constants.MessageType;
 
 public class MessageTypeHelper {
 
-    public MessageType determineMessageAction(JsonNode eventJson) {
-        String message;
-        try {
-            message = eventJson.get("message").get("argumentText").asText().trim();
-        } catch (NullPointerException e) {
+    public static MessageType determineMessageAction(JsonNode eventJson) {
+        final JsonNode msgNode = eventJson.get("message").get("argumentText");
+
+        if(msgNode == null) {
             // Acrobot was added via mention to a room, and has no argument text
             return MessageType.ADDED_TO_ROOM;
         }
+
+        String message = msgNode.asText();
 
         if(message.startsWith(Constants.SUDO_PASSWORD)) {
             return MessageType.SUDO_RESPONSE;
@@ -41,7 +42,7 @@ public class MessageTypeHelper {
         }
     }
 
-    private boolean isMessageValid(String message) {
+    private static boolean isMessageValid(String message) {
         return message.contains("=") && (!message.trim().endsWith("="));
     }
 }

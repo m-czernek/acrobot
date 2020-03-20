@@ -17,7 +17,7 @@ public class MessageHelper {
 
     public String handleMessageAction(JsonNode eventJson) {
         String authorEmail = eventJson.get("user").get("email").asText();
-        MessageType type = new MessageTypeHelper().determineMessageAction(eventJson);
+        MessageType type = MessageTypeHelper.determineMessageAction(eventJson);
 
         if(type == MessageType.ADDED_TO_ROOM) {
             return type.eventType;
