@@ -34,4 +34,7 @@ public class Constants {
             "https://github.com/m-czernek/acrobot \n\n" +
             "Currently, Acrobot is testing injecting IRC acronym database into the results. For feedback, comments, or suggestions "+
             "about the function, visit https://github.com/m-czernek/acrobot/pull/12";
+
+    public static final String FOUND_YAML_TEXT = "\n_Found requested acronym in the IRC database. " +
+            "Send @Acrobot help for more information about this feature._\n";
 }

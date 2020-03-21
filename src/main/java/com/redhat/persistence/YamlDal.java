@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class YamlDal {
-    Map<String, Map<String, String>> yamlDatabase;
+    private Map<String, Map<String, String>> yamlDatabase;
 
 
     public YamlDal() {
