@@ -2,3 +2,4 @@
 *.iml
 target
 .secret
+dependency-reduced-pom.xml
