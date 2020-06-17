@@ -16,7 +16,7 @@ public class MessageTypeHelper {
 
         String message = msgNode.asText();
 
-        if(message.startsWith(Constants.SUDO_PASSWORD)) {
+        if(message.startsWith(Constants.getSudoPassword("PW does not exist"))) {
             return MessageType.SUDO_RESPONSE;
         }
 

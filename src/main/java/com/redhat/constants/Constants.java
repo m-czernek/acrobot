@@ -4,10 +4,8 @@ public class Constants {
     public static final String CREDENTIALS_PATH_ENV_PROPERTY = "GOOGLE_APPLICATION_CREDENTIALS";
     public static final String PROJECT_ID = System.getenv("PROJECT_ID");
     public static final String SUBSCRIPTION_ID = System.getenv("SUBSCRIPTION_ID");
-    public static final String SUDO_PASSWORD = System.getenv("SUDO_PASSWORD");
     public static final String HANGOUTS_CHAT_API_SCOPE = "https://www.googleapis.com/auth/chat.bot";
     public static final String YAML_SOURCE = "AcroBot/data/abbrev.yaml"; // ClassLoader path
-
     // Response templates
     public static final String RESPONSE_URL_TEMPLATE = "https://chat.googleapis.com/v1/__SPACE_ID__/messages";
     public static final String ADDED_RESPONSE = "Thank you for adding me! Send `@Acrobot help` for more information about me.";
@@ -37,4 +35,13 @@ public class Constants {
 
     public static final String FOUND_YAML_TEXT = "\n\n_Found requested acronym in the IRC database. " +
             "Send @Acrobot help for more information about this feature._\n";
+
+    // we should not return null for sudo password
+    private static final String SUDO_PASSWORD = System.getenv("SUDO_PASSWORD");
+    public static String getSudoPassword(String defaultValue) {
+        if(SUDO_PASSWORD == null) {
+            return defaultValue;
+        }
+        return SUDO_PASSWORD;
+    }
 }
