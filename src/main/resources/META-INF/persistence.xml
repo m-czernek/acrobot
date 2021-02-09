@@ -17,6 +17,7 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
 
             <!-- Managing active connections -->
             <property name="hibernate.connection.autoReconnect" value="true" />
+            <property name="statementCacheNumDeferredCloseThreads" value="1" />
             <property name="hibernate.c3p0.idle_test_period" value="300"/>
             <property name="hibernate.c3p0.min_size" value="5"/>
             <property name="hibernate.c3p0.max_size" value="20"/>
