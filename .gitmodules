@@ -1,0 +1,3 @@
+[submodule "src/main/resources/AcroBot"]
+	path = src/main/resources/AcroBot
+	url = https://github.com/theacrobot/AcroBot.git
