@@ -75,10 +75,6 @@ public class MessageHelper {
             return Constants.EXPLANATION_NOT_FOUND;
         }
 
-        if(!e.getAuthorEmail().equals(authorEmail)) {
-            return Constants.INSUFFICIENT_PRIVILEGES;
-        }
-
         if(oldNewExplanation.length == 1) {
             a.getExplanations().remove(e);
             resp = acronymExplanationDal.deleteExplanation(e);
