@@ -12,11 +12,17 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <jackson.version>2.9.10.3</jackson.version>
-    <google.api.client.version>1.25.0</google.api.client.version>
-    <google.cloud.pubsub.version>1.70.0</google.cloud.pubsub.version>
-    <hibernate.version>5.4.27.Final</hibernate.version>
+    <jackson.version>2.9.10.7</jackson.version>
+    <google.api.client.version>1.33.1</google.api.client.version>
+    <google.cloud.pubsub.version>1.115.2</google.cloud.pubsub.version>
+    <hibernate.version>5.6.5.Final</hibernate.version>
     <mysql.connector.version>8.0.23</mysql.connector.version>
+    <h2.version>2.1.210</h2.version>
+    <junit.version>4.13.1</junit.version>
+    <assertj-core.version>3.11.1</assertj-core.version>
+    <system-rules.version>1.19.0</system-rules.version>
+    <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+    <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
   </properties>
 
   <dependencies>
@@ -65,28 +71,28 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>1.4.199</version>
+      <version>${h2.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.1</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.11.1</version>
+      <version>${assertj-core.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.github.stefanbirkner</groupId>
       <artifactId>system-rules</artifactId>
-      <version>1.19.0</version>
+      <version>${system-rules.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -96,7 +102,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <version>${maven-compiler-plugin.version}</version>
         <configuration>
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
@@ -106,7 +112,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.1</version>
+        <version>${maven-shade-plugin.version}</version>
         <executions>
           <!-- Run shade goal on package phase -->
           <execution>
@@ -115,6 +121,17 @@
               <goal>shade</goal>
             </goals>
             <configuration>
+              <!-- https://stackoverflow.com/questions/999489/invalid-signature-file-when-attempting-to-run-a-jar -->
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                  <!--add Main-Class to manifest file-->
