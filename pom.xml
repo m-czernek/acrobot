@@ -121,6 +121,17 @@
               <goal>shade</goal>
             </goals>
             <configuration>
+              <!-- https://stackoverflow.com/questions/999489/invalid-signature-file-when-attempting-to-run-a-jar -->
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                  <!--add Main-Class to manifest file-->
