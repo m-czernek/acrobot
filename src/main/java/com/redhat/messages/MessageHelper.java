@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class MessageHelper {
 
-    private AcronymExplanationDal acronymExplanationDal = new AcronymExplanationDal();
+    private final AcronymExplanationDal acronymExplanationDal = new AcronymExplanationDal();
 
     public String handleMessageAction(JsonNode eventJson) {
         String resp;

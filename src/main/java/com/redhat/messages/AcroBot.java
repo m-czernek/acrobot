@@ -4,7 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.auth.http.HttpCredentialsAdapter;
+import com.google.auth.oauth2.GoogleCredentials;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
@@ -18,22 +19,22 @@ import com.google.pubsub.v1.PubsubMessage;
 import com.redhat.constants.Constants;
 
 import java.io.FileInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 
 public class AcroBot implements MessageReceiver {
     private static final String SERVICE_ACCOUNT_KEY_PATH = System.getenv(Constants.CREDENTIALS_PATH_ENV_PROPERTY);
 
-    private GoogleCredential credential;
-    private HttpTransport httpTransport;
-    private HttpRequestFactory requestFactory;
-    private MessageHelper helper;
+    private final HttpRequestFactory requestFactory;
+    private final MessageHelper helper;
 
     public AcroBot() throws Exception {
-        credential = GoogleCredential
+        GoogleCredentials credential = GoogleCredentials
                 .fromStream(new FileInputStream(SERVICE_ACCOUNT_KEY_PATH))
                 .createScoped(Collections.singleton(Constants.HANGOUTS_CHAT_API_SCOPE));
-        httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-        requestFactory = httpTransport.createRequestFactory(credential);
+        HttpCredentialsAdapter credentialsAdapter = new HttpCredentialsAdapter(credential);
+        HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+        requestFactory = httpTransport.createRequestFactory(credentialsAdapter);
         helper = new MessageHelper();
     }
 
@@ -85,7 +86,7 @@ public class AcroBot implements MessageReceiver {
                 .replaceFirst("__SPACE_ID__", eventJson.get("space").get("name").asText());
         GenericUrl url = new GenericUrl(URI);
 
-        HttpContent content = new ByteArrayContent("application/json", responseNode.toString().getBytes("UTF-8"));
+        HttpContent content = new ByteArrayContent("application/json", responseNode.toString().getBytes(StandardCharsets.UTF_8));
         HttpRequest request = requestFactory.buildPostRequest(url, content);
         request.execute();
     }

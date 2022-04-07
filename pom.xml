@@ -23,6 +23,7 @@
     <system-rules.version>1.19.0</system-rules.version>
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
+    <google.auth.library.oauth2.http.version>1.6.0</google.auth.library.oauth2.http.version>
   </properties>
 
   <dependencies>
@@ -37,6 +38,12 @@
       <groupId>com.google.cloud</groupId>
       <artifactId>google-cloud-pubsub</artifactId>
       <version>${google.cloud.pubsub.version}</version>
+    </dependency>
+    <!--  Google's auth library  -->
+    <dependency>
+      <groupId>com.google.auth</groupId>
+      <artifactId>google-auth-library-oauth2-http</artifactId>
+      <version>${google.auth.library.oauth2.http.version}</version>
     </dependency>
     <!-- JSON parsing library -->
     <dependency>
