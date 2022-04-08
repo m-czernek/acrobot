@@ -43,10 +43,4 @@ public enum PersistenceManager {
         }
         return emFactory.createEntityManager();
     }
-
-    public void close() {
-        emFactory.close();
-        this.emFactory = null;
-    }
-
 }

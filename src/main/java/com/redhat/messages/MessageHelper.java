@@ -5,6 +5,7 @@ import com.redhat.constants.Constants;
 import com.redhat.entities.Acronym;
 import com.redhat.entities.Explanation;
 import com.redhat.persistence.AcronymExplanationDal;
+import com.redhat.persistence.CounterDal;
 
 import java.util.HashSet;
 import java.util.List;
@@ -12,7 +13,8 @@ import java.util.Set;
 
 public class MessageHelper {
 
-    private AcronymExplanationDal acronymExplanationDal = new AcronymExplanationDal();
+    private final AcronymExplanationDal acronymExplanationDal = new AcronymExplanationDal();
+    private final CounterDal counterDal = new CounterDal();
 
     public String handleMessageAction(JsonNode eventJson) {
         String resp;
@@ -25,6 +27,8 @@ public class MessageHelper {
             // Acrobot was added via mention to a room, and has no argument text
             return Constants.ADDED_RESPONSE;
         }
+
+        counterDal.logMessage(authorEmail, message);
 
         if(message.startsWith(Constants.SUDO_PASSWORD)) {
             return AdministrativeMessageHelper.handleAdminMessage(message);
