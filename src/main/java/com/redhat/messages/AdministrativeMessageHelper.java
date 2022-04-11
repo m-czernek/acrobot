@@ -1,7 +1,6 @@
 package com.redhat.messages;
 
 import com.redhat.persistence.CounterDal;
-import com.redhat.persistence.PersistenceManager;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

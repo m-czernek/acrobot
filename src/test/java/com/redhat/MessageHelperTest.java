@@ -3,8 +3,8 @@ package com.redhat;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.redhat.constants.Constants;
 import com.redhat.helpers.JsonNodeHelper;
-import com.redhat.messages.AdministrativeMessageHelper;
 import com.redhat.messages.MessageHelper;
+import com.redhat.persistence.PersistenceManager;
 import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
 
 public class MessageHelperTest {
-    private MessageHelper helper = new MessageHelper();
+    private final MessageHelper helper = new MessageHelper();
 
     @ClassRule
     public static final EnvironmentVariables environmentVariables = new EnvironmentVariables()
@@ -185,13 +185,13 @@ public class MessageHelperTest {
     @Before
     public void setupDB() {
         // Connecting will re-create all tables, and we insert an initial acronym for testing purposes
-        AdministrativeMessageHelper.handleAdminMessage("connect");
+        PersistenceManager.INSTANCE.init();
         helper.handleMessageAction(JsonNodeHelper.getSetupDb());
     }
 
     @After
     public void cleanDB() {
         // Disconnecting will drop all tables, and all changes to the DB
-        AdministrativeMessageHelper.handleAdminMessage("disconnect");
+        PersistenceManager.INSTANCE.close();
     }
 }
