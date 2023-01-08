@@ -14,8 +14,8 @@ import java.util.Objects;
 @Entity
 @Table(name = "counter")
 @NamedQueries({
-        @NamedQuery(name = "getRecordsThisMonth", query = "SELECT c FROM Counter c WHERE MONTH(c.timestamp) = MONTH(NOW())"),
-        @NamedQuery(name = "getRecordsRange", query = "SELECT c FROM Counter c WHERE MONTH(c.timestamp) BETWEEN ?1 AND MONTH(NOW())")
+        @NamedQuery(name = "getRecordsThisMonth", query = "SELECT c FROM counter c WHERE MONTH(c.timestamp) = MONTH(NOW()) AND YEAR(c.timestamp) = YEAR(NOW())"),
+        @NamedQuery(name = "getRecordsRange", query = "SELECT c FROM counter c WHERE c.timestamp >= NOW()-interval ?1 month")
 })
 public class Counter {
 
