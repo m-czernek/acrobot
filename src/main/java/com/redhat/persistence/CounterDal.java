@@ -29,7 +29,7 @@ public class CounterDal {
     public int getNumMessagesThisMonth() {
         init();
         try {
-            return em.createNamedQuery("getRecordsThisMonth", Counter.class)
+            return em.createNativeQuery("SELECT c.* FROM counter AS c WHERE MONTH(c.timestamp) = MONTH(NOW()) AND YEAR(c.timestamp) = YEAR(NOW())", Counter.class)
                     .getResultList()
                     .size();
         } catch (Exception e) {
@@ -43,8 +43,8 @@ public class CounterDal {
     public int getNumMessagesBetweenRange(int rangeStart) {
         init();
         try {
-            return em.createNamedQuery("getRecordsRange", Counter.class)
-                    .setParameter(1, rangeStart)
+
+            return em.createNativeQuery("SELECT c.* FROM counter AS c WHERE c.timestamp >= NOW() - INTERVAL " + rangeStart + " month", Counter.class)
                     .getResultList()
                     .size();
         } catch (Exception e) {
