@@ -37,16 +37,17 @@ public enum PersistenceManager {
         }
     }
 
+    public void close() {
+        if(emFactory != null) {
+            emFactory.close();
+            this.emFactory = null;
+        }
+    }
+
     public EntityManager getEntityManager() {
         if(emFactory == null) {
             init();
         }
         return emFactory.createEntityManager();
     }
-
-    public void close() {
-        emFactory.close();
-        this.emFactory = null;
-    }
-
 }

@@ -89,7 +89,9 @@ public class AcronymExplanationDal {
     }
 
     public void close() {
-        em.close();
+        if(em != null) {
+            em.close();
+        }
         this.em = null;
     }
 

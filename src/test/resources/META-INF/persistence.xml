@@ -6,6 +6,7 @@
     <persistence-unit name="test" transaction-type="RESOURCE_LOCAL">
         <class>com.redhat.entities.Acronym</class>
         <class>com.redhat.entities.Explanation</class>
+        <class>com.redhat.entities.Counter</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
             <property name="javax.persistence.jdbc.url"    value="jdbc:h2:mem:test" />
