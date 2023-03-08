@@ -36,7 +36,8 @@ public class Acronym extends PanacheEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Acronym acronym1 = (Acronym) o;
-        return Objects.equals(acronym, acronym1.acronym);
+        return acronym.equals(acronym1.acronym) &&
+          explanations.equals(acronym1.explanations);
     }
 
     @Override

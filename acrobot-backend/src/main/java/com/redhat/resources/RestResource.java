@@ -31,26 +31,16 @@ public class RestResource {
         return Acronym.find("lower(acronym)", acronym.toLowerCase()).list();
     }
 
-    @GET
-    public List<Acronym> getAll() {
-        return Acronym.listAll();
-    }
-
     @PUT
     @Transactional
     public Response save(Acronym acronym) {
-        try {
-            for (var expl : acronym.explanations) {
-                if (expl.acronym == null) {
-                    expl.acronym = acronym;
-                }
+        for (var expl : acronym.explanations) {
+            if (expl.acronym == null) {
+                expl.acronym = acronym;
             }
-            Acronym.persist(acronym);
-            return Response.status(201).build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new InternalServerErrorException(e.getMessage());
         }
+        Acronym.persist(acronym);
+        return Response.status(201).build();
     }
 
     @POST
@@ -60,20 +50,19 @@ public class RestResource {
                 .firstResultOptional()
                 .orElseThrow(NotFoundException::new);
 
-        for (var expl : acronym.explanations) {
-            expl.acronym = oldAcronym;
-        }
+        oldAcronym.delete();
+        save(acronym);
 
-        oldAcronym.explanations = acronym.explanations;
-        oldAcronym.persist();
-        return oldAcronym;
+        return acronym;
     }
 
     @Path("/{acronym}")
     @DELETE
     @Transactional
     public void delete(@PathParam("acronym") String acronym) {
-        var a = Acronym.find("acronym", acronym).firstResultOptional().orElseThrow(NotFoundException::new);
-        a.delete();
+        Acronym
+          .find("lower(acronym)", acronym.toLowerCase())
+          .firstResultOptional().orElseThrow(NotFoundException::new)
+          .delete();
     }
 }

@@ -21,6 +21,13 @@ public class Explanation extends PanacheEntity {
 
     public String authorEmail;
 
+    public Explanation() {}
+
+    public Explanation(String explanation, Acronym acronym) {
+        this.explanation = explanation;
+        this.acronym = acronym;
+    }
+
     @Override
     public String toString() {
         return "Explanation{" +
@@ -34,12 +41,11 @@ public class Explanation extends PanacheEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Explanation that = (Explanation) o;
-        return Objects.equals(explanation, that.explanation) &&
-                Objects.equals(acronym, that.acronym);
+        return explanation.equals(that.explanation);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(explanation, acronym);
+        return Objects.hash(explanation);
     }
 }
