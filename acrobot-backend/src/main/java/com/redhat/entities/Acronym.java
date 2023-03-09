@@ -42,7 +42,7 @@ public class Acronym extends PanacheEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(acronym);
+        return Objects.hash(acronym, explanations);
     }
 
 }
