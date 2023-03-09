@@ -4,7 +4,6 @@ public class Constants {
     public static final String CREDENTIALS_PATH_ENV_PROPERTY = "GOOGLE_APPLICATION_CREDENTIALS";
     public static final String PROJECT_ID = System.getenv("PROJECT_ID");
     public static final String SUBSCRIPTION_ID = System.getenv("SUBSCRIPTION_ID");
-    public static final String SUDO_PASSWORD = System.getenv("SUDO_PASSWORD");
     public static final String HANGOUTS_CHAT_API_SCOPE = "https://www.googleapis.com/auth/chat.bot";
 
     // Response templates
@@ -15,7 +14,6 @@ public class Constants {
     public static final String ACRONYM_SAVED = "Thank you, I have saved your acronym.";
     public static final String ACRONYM_UPDATED = "Thank you, I have updated the acronym.";
     public static final String INSUFFICIENT_PRIVILEGES = "You cannot update acronyms that you did not save. Aborting!";
-    public static final String EXPLANATION_REMOVED = "Explanation removed. Thank you!";
     public static final String EXPLANATION_NOT_FOUND = "No such explanation with given Acronym. Are you sure the acronym is correct?";
     public static final String ACRONYM_NOT_FOUND = "No such acronym found. Add it using the syntax `! acronym = explanation` (queries are case-insensitive), " +
             "or send `help` for more info.";

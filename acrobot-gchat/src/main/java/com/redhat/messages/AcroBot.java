@@ -39,12 +39,9 @@ public class AcroBot implements MessageReceiver {
 
     @Override
     public void receiveMessage(PubsubMessage pubsubMessage, AckReplyConsumer consumer) {
-        System.out.println("Id : " + pubsubMessage.getMessageId());
-        // handle incoming message, then ack/nack the received message
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode dataJson = mapper.readTree(pubsubMessage.getData().toStringUtf8());
-            System.out.println("Data : " + dataJson.toString());
             handle(dataJson);
         } catch (Exception e) {
             e.printStackTrace();
