@@ -1,7 +1,9 @@
 package com.redhat.client;
 
 import com.redhat.entities.Acronym;
+import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -16,6 +18,8 @@ import java.util.List;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@RegisterRestClient
+@ApplicationScoped
 public interface AcrobotBE {
 
     @GET

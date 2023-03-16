@@ -4,23 +4,22 @@ import com.redhat.client.AcrobotBE;
 import com.redhat.constants.Constants;
 import com.redhat.entities.Acronym;
 import com.redhat.entities.Explanation;
-import org.eclipse.microprofile.rest.client.RestClientBuilder;
+import io.quarkus.runtime.StartupEvent;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
-import java.net.URI;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
+import javax.inject.Inject;
 import java.util.HashSet;
 import java.util.List;
 
+@ApplicationScoped
 public class AcrobotResource {
-    public AcrobotBE acrobotBE;
-    MessageUtils utils;
 
-    public AcrobotResource() {
-        this.acrobotBE = RestClientBuilder.newBuilder()
-          .baseUri(URI.create("http://localhost:8080/"))
-          .build(AcrobotBE.class);
-
-        this.utils = new MessageUtils();
-    }
+    @Inject
+    @RestClient
+    AcrobotBE acrobotBE;
+    MessageUtils utils = new MessageUtils();
 
     public String updateExplanations(String message, String authorEmail) {
         String[] acronymExplanationsArray = utils.splitMessageToSaveAndTrim(message);

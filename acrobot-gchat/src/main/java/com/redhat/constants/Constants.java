@@ -29,4 +29,5 @@ public class Constants {
             "and you can input acronym in both lower- and uppercase; it will be matched regardless of the capitalisation. \n\n" +
             "Acrobot is implemented by Marek Czernek. You can find documentation and file issues or suggest improvements at " +
             "https://github.com/m-czernek/acrobot";
+    public static final String MESSAGE_TOO_LONG = "Explanation too long (>255 chars).";
 }

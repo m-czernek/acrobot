@@ -12,6 +12,10 @@ public class MessageUtils {
         return array;
     }
 
+    public boolean isMessageTooLong(String msg) {
+        return msg.length() > 255;
+    }
+
     public boolean isMessageValid(String message) {
         return message.contains("=") && (!message.trim().endsWith("="));
     }

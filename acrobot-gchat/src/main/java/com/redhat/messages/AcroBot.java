@@ -17,24 +17,24 @@ import com.google.cloud.pubsub.v1.MessageReceiver;
 import com.google.pubsub.v1.PubsubMessage;
 import com.redhat.constants.Constants;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.io.FileInputStream;
 import java.util.Collections;
 
+@ApplicationScoped
 public class AcroBot implements MessageReceiver {
     private static final String SERVICE_ACCOUNT_KEY_PATH = System.getenv(Constants.CREDENTIALS_PATH_ENV_PROPERTY);
-
-    private GoogleCredential credential;
-    private HttpTransport httpTransport;
-    private HttpRequestFactory requestFactory;
-    private MessageHelper helper;
+    private final HttpRequestFactory requestFactory;
+    @Inject
+    MessageController helper;
 
     public AcroBot() throws Exception {
-        credential = GoogleCredential
-                .fromStream(new FileInputStream(SERVICE_ACCOUNT_KEY_PATH))
-                .createScoped(Collections.singleton(Constants.HANGOUTS_CHAT_API_SCOPE));
-        httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+        GoogleCredential credential = GoogleCredential
+          .fromStream(new FileInputStream(SERVICE_ACCOUNT_KEY_PATH))
+          .createScoped(Collections.singleton(Constants.HANGOUTS_CHAT_API_SCOPE));
+        HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
         requestFactory = httpTransport.createRequestFactory(credential);
-        helper = new MessageHelper();
     }
 
     @Override

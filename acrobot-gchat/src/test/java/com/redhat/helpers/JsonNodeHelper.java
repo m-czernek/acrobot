@@ -26,11 +26,7 @@ public class JsonNodeHelper {
     private static final String UPDATE_OLD_EXPLANATION = "!" + INITIAL_ACRONYM + "  =   " + EXPLANATION + "=>" + EXPLANATION_UPDATE;
 
     // Delete inputs
-    private static final String DELETE_EXPLANATION = "!" + INITIAL_ACRONYM + "   =    "+ EXPLANATION_UPDATE + "=>";
     private static final String DELETE_ORIGINAL_EXPLANATION = "!" + INITIAL_ACRONYM + "    =    "+ EXPLANATION + "=>";
-
-    // Setup acronym
-    private static final String SETUP_DB_ACRONYM = "! " +  INITIAL_ACRONYM + "  =  " + EXPLANATION;
 
     // Misc
     private static final String NON_STANDARD_EMAIL = "rbecky@example.com";
@@ -43,7 +39,7 @@ public class JsonNodeHelper {
             return mapper.readTree(parser);
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return new ObjectNode(null);
         }
     }
 
@@ -51,16 +47,8 @@ public class JsonNodeHelper {
         return alterArgumentText("help");
     }
 
-    public static JsonNode getSetupDb() {
-        return alterArgumentText(SETUP_DB_ACRONYM);
-    }
-
     public static JsonNode getInitialAcronymLowercase() {
         return alterArgumentText(INITIAL_ACRONYM.toLowerCase());
-    }
-
-    public static JsonNode getInitialAcronymUppercase() {
-        return alterArgumentText(INITIAL_ACRONYM);
     }
 
     public static JsonNode updateInitialAcronym() {
@@ -79,20 +67,16 @@ public class JsonNodeHelper {
         return alterArgumentText(UPDATE_OLD_EXPLANATION);
     }
 
-    public static JsonNode deleteUpdatedAcronymExplanationSameEmail() {
-        return alterArgumentText(DELETE_EXPLANATION);
-    }
-
     public static JsonNode deleteAcronymInitialExplanation() {
         return alterArgumentText(DELETE_ORIGINAL_EXPLANATION);
     }
 
     public static JsonNode getUpdateAcronymExplanationDifferentUser() {
-        return alterUser(updateAcronymExplanationSameEmail(), NON_STANDARD_EMAIL);
+        return alterUser(updateAcronymExplanationSameEmail());
     }
 
     public static JsonNode getDeleteAcronymInitialExplanationDifferentUser() {
-        return alterUser(deleteAcronymInitialExplanation(), NON_STANDARD_EMAIL);
+        return alterUser(deleteAcronymInitialExplanation());
     }
 
     public static JsonNode updateNonExistentExplanation() {
@@ -112,10 +96,10 @@ public class JsonNodeHelper {
         return nodeHelpText;
     }
 
-    private static ObjectNode alterUser(JsonNode node, String user) {
+    private static ObjectNode alterUser(JsonNode node) {
         ObjectNode nodeHelpText = ((ObjectNode) node);
         ObjectNode userNode = (ObjectNode) nodeHelpText.get("user");
-        userNode.put("email", user);
+        userNode.put("email", JsonNodeHelper.NON_STANDARD_EMAIL);
         nodeHelpText.set("user", userNode);
         return nodeHelpText;
     }
