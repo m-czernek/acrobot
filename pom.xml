@@ -17,7 +17,7 @@
     <google.cloud.pubsub.version>1.115.2</google.cloud.pubsub.version>
     <hibernate.version>5.6.5.Final</hibernate.version>
     <mysql.connector.version>8.0.23</mysql.connector.version>
-    <h2.version>2.1.210</h2.version>
+    <h2.version>2.2.220</h2.version>
     <junit.version>4.13.1</junit.version>
     <assertj-core.version>3.11.1</assertj-core.version>
     <system-rules.version>1.19.0</system-rules.version>
