@@ -3,3 +3,4 @@
 target
 .secret
 dependency-reduced-pom.xml
+.vscode
