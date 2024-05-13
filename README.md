@@ -1,6 +1,10 @@
-# Acrobot
+# NOTE
 
-[![Build Status](https://travis-ci.com/m-czernek/acrobot.svg?branch=master)](https://travis-ci.com/m-czernek/acrobot)
+If you are a Red Hatter that would like to report Acrobot not working, please ping [Eduardo](https://github.com/ebramirez) who took over the Acrobot maintenance at Red Hat, or [Richard](https://github.com/richardallred) as a backup.
+
+This repository is now archived.
+
+# Acrobot
 
 Acrobot is a Google Hangouts chat bot, with the aim of keeping track
 of acronyms used within the company.
